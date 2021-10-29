@@ -1,8 +1,8 @@
 ﻿using CommandLine;
 using Filestransformer.Actor;
+using Filestransformer.Settings;
 using Filestransformer.Support.CommandLine;
 using Filestransformer.Support.Logger;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,17 +12,13 @@ namespace Filestransformer
     {
         public static IActor GetActor(Options op)
         {
-            if (op.FileGroups <= 0)
-            {
-                throw new ArgumentException($"Invalid value '{op.FileGroups}' specified.");
-            }
-            if (op.MaximumParallelFileTransformations <= 0)
-            {
-                throw new ArgumentException($"Invalid value '{op.MaximumParallelFileTransformations}' specified.");
-            }
+            // merge console and default settings
+            // console settings can override default settings
+            //
+            var settings = new DefaultSettingsProvider().GetSettings()
+                .MergeFrom(new ConsoleSettingsProvider(op).GetSettings());
 
-            Settings.Instance.Initialize(op.FileGroups, op.MaximumParallelFileTransformations);
-            return new FiletransformerActor(Settings.Instance);
+            return new FiletransformerActor(settings);
         }
 
         public static IActor HandleOptionsParseError(IEnumerable<Error> errors)

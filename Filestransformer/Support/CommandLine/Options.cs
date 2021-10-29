@@ -9,9 +9,15 @@ namespace Filestransformer.Support.CommandLine
 
         [Option('n', Required = false, HelpText = "Each file belongs one group, " +
             "each group can have arbitrary number of files associated with it")]
-        public int FileGroups { get; set; } = 3;
+        public int FileGroups { get; set; }
 
         [Option('p', Required = false, HelpText = "Maximum number of file transformations allowed in an epoch")]
-        public int MaximumParallelFileTransformations { get; set; } = 3;
+        public int MaximumParallelFileTransformations { get; set; }
+
+        [Option('i', Required = false, HelpText = "Folder containing files to transform")]
+        public string InputFolderPath { get; set; }
+
+        [Option('o', Required = false, HelpText = "Folder contained transformed files")]
+        public string OutputFolderPath { get; set; }
     }
 }
