@@ -11,6 +11,8 @@ namespace Filestransformer.StateMachines.FileGroupManager
     {
         protected abstract void InitializeFileGroupManager();
 
+        protected abstract void DispatchPendingFileTransformationJobRequests();
+
         protected abstract void HandleAddFileToTransform();
 
         protected abstract void HandleAddFilesToTransform();

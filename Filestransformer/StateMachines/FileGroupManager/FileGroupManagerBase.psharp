@@ -1,5 +1,6 @@
 ﻿using System;
 using Filestransformer.StateMachines.FileGroupManager.Events;
+using Filestransformer.StateMachines.CommonEvents;
 
 namespace Filestransformer.StateMachines.FileGroupManager
 {
@@ -16,9 +17,28 @@ namespace Filestransformer.StateMachines.FileGroupManager
         
         state Active
         {
-            on eAddFileToTransform do HandleAddFileToTransform;
-            on eAddFilesToTransform do HandleAddFilesToTransform;
+            on eAddFileToTransform do 
+            {
+                HandleAddFileToTransform();
+                jump(Dispatching);
+            }
 
+            on eAddFilesToTransform do
+            {
+                HandleAddFilesToTransform();
+                jump(Dispatching);
+            }
+
+            defer *;
+        }
+
+        state Dispatching
+        {
+            entry
+            {
+                DispatchPendingFileTransformationJobRequests();
+                jump(Active);
+            }
 
             defer *;
         }

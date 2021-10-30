@@ -1,10 +1,8 @@
-﻿using Filestransformer.StateMachines.FileSystemWatcher.Events;
-using Filestransformer.StateMachines.FileGroupManager.Events;
+﻿using Filestransformer.StateMachines.CommonEvents;
+using Filestransformer.StateMachines.FileSystemWatcher.Events;
 using Filestransformer.Support.Logger;
-using Filestransformer.Support.Utils;
-using System.Collections.Generic;
-using System.IO;
 using Microsoft.PSharp;
+using System.IO;
 using System.Linq;
 
 namespace Filestransformer.StateMachines.FileSystemWatcher
