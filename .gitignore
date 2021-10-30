@@ -8,15 +8,11 @@
 *.ilk
 *.pdb
 *.obj
+*.cache
 dummy*
 *.vs
 bin/
 obj/
-*.cache
-*.config
 
-## On Mac
-*.out
-*.plist
-dummy*
-/packages
+*.config
+packages/

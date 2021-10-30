@@ -1,35 +1,42 @@
 ﻿using Filestransformer.StateMachines.FileSystemWatcher.Events;
 using Filestransformer.Support.Logger;
+using Filestransformer.Support.Utils;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Filestransformer.StateMachines.FileSystemWatcher
 {
     public partial class FileSystemWatcher : FileSystemWatcherBase
     {
-        private string folderToWatch;
+        private string inputDirectory;
+        private string directoryToWatch;
         private ILogger logger;
         private System.IO.FileSystemWatcher watcher;
 
         protected override void InitializeFileSystemWatcher()
         {
             var config = ReceivedEvent as eFileSystemWatcherConfig;
-            folderToWatch = config.FolderToWatch;
+            inputDirectory = directoryToWatch = config.FolderToWatch;
             logger = config.Logger;
 
-            logger.WriteLine($"created {nameof(FileSystemWatcher)} machine to watch folder \"{folderToWatch}\" ");
+            logger.WriteLine($"Created {nameof(FileSystemWatcher)} machine to watch directory \"{directoryToWatch}\" ");
         }
 
         protected override void Run()
         {
-            // scan for existing files in the directory
-            var files = Directory.GetFiles(folderToWatch, "*.txt");
-            foreach (var file in files)
+            // get existing files in the directory if any
+            var existingFiles = GetTextFilesInDirectory(inputDirectory);
+            if (existingFiles?.Length > 0)
             {
-                var fileName = Path.GetFileName(file);
-                logger.WriteLine($"Found file {fileName}");
+                var filesInfo = GetGroupAndUnqualifiedFileNames(existingFiles);
+                foreach (var fileInfo in filesInfo)
+                {
+                    logger.WriteLine($"Group: {fileInfo.Group}, filename: {fileInfo.FileName}, directory: {fileInfo.Directory}");
+                }
             }
 
-            watcher = new System.IO.FileSystemWatcher(folderToWatch);
+            // watch for new files in the directory
+            watcher = new System.IO.FileSystemWatcher(directoryToWatch);
             watcher.NotifyFilter = NotifyFilters.Attributes
                                  | NotifyFilters.CreationTime
                                  | NotifyFilters.DirectoryName
@@ -39,9 +46,8 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
                                  | NotifyFilters.Security
                                  | NotifyFilters.Size;
 
-            // only monitor for text files
-            watcher.Filter = "*.txt";
-            watcher.IncludeSubdirectories = false;
+            watcher.Filter = "*.txt";   // monitor for text files only
+            watcher.IncludeSubdirectories = false;  // only in current directory, not child directories
             watcher.EnableRaisingEvents = true;
 
             watcher.Created += OnCreated;
@@ -51,5 +57,35 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
         {
             logger.WriteLine($"File created: {e.Name}");
         }
+
+        private static string[] GetTextFilesInDirectory(string directory) => Directory.GetFiles(directory, "*.txt");
+
+        private List<FileInfo> GetGroupAndUnqualifiedFileNames(string[] fileNames)
+        {
+            var fileInfoList = new List<FileInfo>();
+            foreach (var fileName in fileNames)
+            {
+                string group, unqualifiedFileName;
+                FullyQualifiedNameClient.GetGroupAndFileNameFromFullyQualifiedFileName(Path.GetFileName(fileName),
+                    out group, out unqualifiedFileName);
+                fileInfoList.Add(new FileInfo(group, unqualifiedFileName, inputDirectory));
+            }
+            return fileInfoList;
+        }
     }
+
+    public class FileInfo
+    {
+        public string Group { get; }
+        public string FileName { get; }
+        public string Directory { get; }
+
+        public FileInfo(string group, string fileName, string directory)
+        {
+            Group = group;
+            FileName = fileName;
+            Directory = directory;
+        }
+    }
+
 }

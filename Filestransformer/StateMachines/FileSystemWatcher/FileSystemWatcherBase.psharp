@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.PSharp.Timers;
-using Microsoft.PSharp;
 using Filestransformer.StateMachines.FileSystemWatcher.Events;
 
 namespace Filestransformer.StateMachines.FileSystemWatcher

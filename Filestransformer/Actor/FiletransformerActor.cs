@@ -3,6 +3,7 @@ using Filestransformer.StateMachines.FileSystemWatcher;
 using Filestransformer.StateMachines.FileSystemWatcher.Events;
 using Filestransformer.Support.Logger;
 using Microsoft.PSharp;
+using System;
 using System.Threading;
 namespace Filestransformer.Actor
 {
@@ -18,6 +19,14 @@ namespace Filestransformer.Actor
         {
             this.settings = settings;
             psharpRuntime = PSharpRuntime.Create(Microsoft.PSharp.Configuration.Create());
+            psharpRuntime.OnFailure += delegate (Exception ex)
+            {
+                string errorMessage = Environment.NewLine + $"An error occurred in one or more PSharp state machines: {ex.ToString()}" +
+                    Environment.NewLine + Environment.NewLine + "The program cannot continue any further, press enter to exit the program.";
+                LoggerFactory.GetLogger().WriteLine(errorMessage);
+                Console.ReadKey();
+                Environment.Exit(1);
+            };
 
             filesystemWatcher = psharpRuntime.CreateMachine(typeof(FileSystemWatcher));
         }

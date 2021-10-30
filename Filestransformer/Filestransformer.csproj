@@ -142,6 +142,7 @@
     <Compile Include="Support\Logger\ConsoleLogger.cs" />
     <Compile Include="Support\Logger\ILogger.cs" />
     <Compile Include="Support\Logger\LoggerFactory.cs" />
+    <Compile Include="Support\Utils\FullyQualifiedNameClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
