@@ -8,16 +8,16 @@ namespace Filestransformer.Settings
 
         public int MaxParallelFileTransformations { get; private set; }
 
-        public string InputFolderPath { get; private set; }
+        public string InputDirectoryPath { get; private set; }
 
-        public string OutputFolderPath { get; private set; }
+        public string OutputDirectoryPath { get; private set; }
 
-        public Setting(int fileGroups, int maxParallelFileTransformations, string inputFolderPath, string outputFolderPath)
+        public Setting(int fileGroups, int maxParallelFileTransformations, string inputDirectoryPath, string outputDirectoryPath)
         {
             this.FileGroups = fileGroups;
             this.MaxParallelFileTransformations = maxParallelFileTransformations;
-            this.InputFolderPath = inputFolderPath;
-            this.OutputFolderPath = outputFolderPath;
+            this.InputDirectoryPath = inputDirectoryPath;
+            this.OutputDirectoryPath = outputDirectoryPath;
         }
 
         /// <summary>
@@ -36,17 +36,17 @@ namespace Filestransformer.Settings
                 this.MaxParallelFileTransformations = otherSettings.MaxParallelFileTransformations;
             }
 
-            if (!string.IsNullOrWhiteSpace(otherSettings.InputFolderPath))
+            if (!string.IsNullOrWhiteSpace(otherSettings.InputDirectoryPath))
             {
-                this.InputFolderPath = otherSettings.InputFolderPath;
+                this.InputDirectoryPath = otherSettings.InputDirectoryPath;
             }
-            this.InputFolderPath = Environment.ExpandEnvironmentVariables(this.InputFolderPath);
+            this.InputDirectoryPath = Environment.ExpandEnvironmentVariables(this.InputDirectoryPath);
 
-            if (!string.IsNullOrWhiteSpace(otherSettings.OutputFolderPath))
+            if (!string.IsNullOrWhiteSpace(otherSettings.OutputDirectoryPath))
             {
-                this.OutputFolderPath = otherSettings.OutputFolderPath;
+                this.OutputDirectoryPath = otherSettings.OutputDirectoryPath;
             }
-            this.OutputFolderPath = Environment.ExpandEnvironmentVariables(this.OutputFolderPath);
+            this.OutputDirectoryPath = Environment.ExpandEnvironmentVariables(this.OutputDirectoryPath);
 
             return this;
         }

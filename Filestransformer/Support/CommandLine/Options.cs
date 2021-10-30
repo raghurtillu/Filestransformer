@@ -14,10 +14,10 @@ namespace Filestransformer.Support.CommandLine
         [Option('p', Required = false, HelpText = "Maximum number of file transformations allowed in an epoch")]
         public int MaximumParallelFileTransformations { get; set; }
 
-        [Option('i', Required = false, HelpText = "Folder containing files to transform")]
-        public string InputFolderPath { get; set; }
+        [Option('i', Required = false, HelpText = "Directory containing files to transform")]
+        public string InputDirectoryPath { get; set; }
 
-        [Option('o', Required = false, HelpText = "Folder contained transformed files")]
-        public string OutputFolderPath { get; set; }
+        [Option('o', Required = false, HelpText = "Directory contained transformed files")]
+        public string OutputDirectoryPath { get; set; }
     }
 }

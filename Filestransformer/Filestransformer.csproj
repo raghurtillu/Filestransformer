@@ -135,6 +135,7 @@
     <Compile Include="Settings\DefaultSettingsProvider.cs" />
     <Compile Include="Settings\ISettingsProvider.cs" />
     <Compile Include="Settings\Setting.cs" />
+    <Compile Include="StateMachines\FileGroupManager\Events\FileGroupManagerEvents.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\Events\FileSystemWatcherEvents.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcher.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcherBase.cs" />

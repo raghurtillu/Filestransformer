@@ -10,13 +10,13 @@ namespace Filestransformer.StateMachines.FileSystemWatcher.Events
 {
     public class eFileSystemWatcherConfig : Event
     {
-        public string FolderToWatch { get; }
+        public string DirectoryToWatch { get; }
 
         public ILogger Logger { get; }
 
-        public eFileSystemWatcherConfig(string folderToWatch, ILogger logger)
+        public eFileSystemWatcherConfig(string directoryToWatch, ILogger logger)
         {
-            this.FolderToWatch = folderToWatch;
+            this.DirectoryToWatch = directoryToWatch;
             this.Logger = logger;
         }
     }

@@ -16,7 +16,7 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
         protected override void InitializeFileSystemWatcher()
         {
             var config = ReceivedEvent as eFileSystemWatcherConfig;
-            inputDirectory = directoryToWatch = config.FolderToWatch;
+            inputDirectory = directoryToWatch = config.DirectoryToWatch;
             logger = config.Logger;
 
             logger.WriteLine($"Created {nameof(FileSystemWatcher)} machine to watch directory \"{directoryToWatch}\" ");

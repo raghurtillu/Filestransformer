@@ -1,5 +1,4 @@
-﻿using Filestransformer.Settings;
-using System;
+﻿using System;
 using System.Configuration;
 
 namespace Filestransformer.Settings
@@ -12,10 +11,10 @@ namespace Filestransformer.Settings
         {
             int fileGroups = Int32.Parse(ConfigurationManager.AppSettings["FileGroups"]);
             int maximumParallelFileTransformations = Int32.Parse(ConfigurationManager.AppSettings["MaximumParallelFileTransformations"]);
-            string inputFolderPath = ConfigurationManager.AppSettings["InputFolderPath"];
-            string outputFolderPath = ConfigurationManager.AppSettings["OutputFolderPath"];
+            string inputDirectoryPath = ConfigurationManager.AppSettings["InputDirectoryPath"];
+            string outputDirectoryPath = ConfigurationManager.AppSettings["OutputDirectoryPath"];
 
-            settings = new Setting(fileGroups, maximumParallelFileTransformations, inputFolderPath, outputFolderPath);
+            settings = new Setting(fileGroups, maximumParallelFileTransformations, inputDirectoryPath, outputDirectoryPath);
         }
 
         public Setting GetSettings()

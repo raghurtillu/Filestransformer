@@ -39,12 +39,12 @@ namespace Filestransformer.Actor
             logger.WriteLine("Running file transformer with the following settings: ");
             logger.WriteLine($"FileGroups: {settings.FileGroups}");
             logger.WriteLine($"MaximumParallelFileTransformations: {settings.MaxParallelFileTransformations}");
-            logger.WriteLine($"InputFolderPath: {settings.InputFolderPath}");
-            logger.WriteLine($"OututFolderPath: {settings.OutputFolderPath}");
+            logger.WriteLine($"InputDirectoryPath: {settings.InputDirectoryPath}");
+            logger.WriteLine($"OutputDirectoryPath: {settings.OutputDirectoryPath}");
 
-            // watch input folder path to detect new files
+            // watch input directory to detect for new files
             //
-            psharpRuntime.SendEvent(filesystemWatcher, new eFileSystemWatcherConfig(settings.InputFolderPath, logger));
+            psharpRuntime.SendEvent(filesystemWatcher, new eFileSystemWatcherConfig(settings.InputDirectoryPath, logger));
 
             // block forever
             WaitEvent.WaitOne();

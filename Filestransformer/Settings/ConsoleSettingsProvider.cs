@@ -10,10 +10,10 @@ namespace Filestransformer.Settings
         {
             int fileGroups = op?.FileGroups ?? 0;
             int maximumParallelFileTransformations = op?.MaximumParallelFileTransformations ?? 0;
-            string inputFolderPath = op?.InputFolderPath ?? "";
-            string outputFolderPath = op?.OutputFolderPath ?? "";
+            string inputDirectoryPath = op?.InputDirectoryPath ?? "";
+            string outputDirectoryPath = op?.OutputDirectoryPath ?? "";
 
-            settings = new Setting(fileGroups, maximumParallelFileTransformations, inputFolderPath, outputFolderPath);
+            settings = new Setting(fileGroups, maximumParallelFileTransformations, inputDirectoryPath, outputDirectoryPath);
         }
 
         public Setting GetSettings()
