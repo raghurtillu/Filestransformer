@@ -1,4 +1,6 @@
-﻿namespace Filestransformer.Settings
+﻿using System;
+
+namespace Filestransformer.Settings
 {
     public class Setting
     {
@@ -24,25 +26,28 @@
         /// <param name="otherSettings"></param>
         public Setting MergeFrom(Setting otherSettings)
         {
-            if (this.FileGroups == 0)
-            { 
-                this.FileGroups = otherSettings.FileGroups; 
+            if (otherSettings.FileGroups != 0)
+            {
+                this.FileGroups = otherSettings.FileGroups;
+            }
+            
+            if (otherSettings.MaxParallelFileTransformations != 0)
+            {
+                this.MaxParallelFileTransformations = otherSettings.MaxParallelFileTransformations;
             }
 
-            if (this.MaxParallelFileTransformations == 0)
-            { 
-                this.MaxParallelFileTransformations = otherSettings.MaxParallelFileTransformations; 
+            if (!string.IsNullOrWhiteSpace(otherSettings.InputFolderPath))
+            {
+                this.InputFolderPath = otherSettings.InputFolderPath;
             }
+            this.InputFolderPath = Environment.ExpandEnvironmentVariables(this.InputFolderPath);
 
-            if (string.IsNullOrWhiteSpace(this.InputFolderPath))
-            { 
-                this.InputFolderPath = otherSettings.InputFolderPath; 
+            if (!string.IsNullOrWhiteSpace(otherSettings.OutputFolderPath))
+            {
+                this.OutputFolderPath = otherSettings.OutputFolderPath;
             }
+            this.OutputFolderPath = Environment.ExpandEnvironmentVariables(this.OutputFolderPath);
 
-            if (string.IsNullOrWhiteSpace(this.OutputFolderPath))
-            { 
-                this.OutputFolderPath = otherSettings.OutputFolderPath; 
-            }
             return this;
         }
     }

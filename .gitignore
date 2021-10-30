@@ -10,10 +10,13 @@
 *.obj
 dummy*
 *.vs
+bin/
+obj/
+*.cache
+*.config
 
 ## On Mac
 *.out
 *.plist
 dummy*
 /packages
-/obj
