@@ -1,38 +1,44 @@
 ﻿using Filestransformer.StateMachines.FileSystemWatcher.Events;
+using Filestransformer.StateMachines.FileGroupManager.Events;
 using Filestransformer.Support.Logger;
 using Filestransformer.Support.Utils;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.PSharp;
+using System.Linq;
 
 namespace Filestransformer.StateMachines.FileSystemWatcher
 {
-    public partial class FileSystemWatcher : FileSystemWatcherBase
+    public class FileSystemWatcher : FileSystemWatcherBase
     {
+        private ILogger logger;
         private string inputDirectory;
         private string directoryToWatch;
-        private ILogger logger;
         private System.IO.FileSystemWatcher watcher;
+        private MachineId fileGroupManager;
 
         protected override void InitializeFileSystemWatcher()
         {
             var config = ReceivedEvent as eFileSystemWatcherConfig;
-            inputDirectory = directoryToWatch = config.DirectoryToWatch;
             logger = config.Logger;
+            inputDirectory = directoryToWatch = config.DirectoryToWatch;
+            fileGroupManager = config.FileGroupManager;
 
-            logger.WriteLine($"Created {nameof(FileSystemWatcher)} machine to watch directory \"{directoryToWatch}\" ");
+            logger.WriteLine($"Initialized {nameof(FileSystemWatcher)} machine to watch directory \"{directoryToWatch}\" ");
         }
 
         protected override void Run()
         {
             // get existing files in the directory if any
-            var existingFiles = GetTextFilesInDirectory(inputDirectory);
-            if (existingFiles?.Length > 0)
+            var existingFiles = Directory.GetFiles(inputDirectory, "*.txt").ToList();
+            if (existingFiles?.Count > 0)
             {
-                var filesInfo = GetGroupAndUnqualifiedFileNames(existingFiles);
-                foreach (var fileInfo in filesInfo)
-                {
-                    logger.WriteLine($"Group: {fileInfo.Group}, filename: {fileInfo.FileName}, directory: {fileInfo.Directory}");
-                }
+                logger.WriteLine($"Found '{existingFiles.Count}' existing files in '{inputDirectory}' to transform");
+
+                // strip out path from the filenames
+                existingFiles = existingFiles.Select(x => Path.GetFileName(x)).ToList();
+
+                this.Send(fileGroupManager, new eAddFilesToTransform(existingFiles));
             }
 
             // watch for new files in the directory
@@ -55,37 +61,7 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            logger.WriteLine($"File created: {e.Name}");
-        }
-
-        private static string[] GetTextFilesInDirectory(string directory) => Directory.GetFiles(directory, "*.txt");
-
-        private List<FileInfo> GetGroupAndUnqualifiedFileNames(string[] fileNames)
-        {
-            var fileInfoList = new List<FileInfo>();
-            foreach (var fileName in fileNames)
-            {
-                string group, unqualifiedFileName;
-                FullyQualifiedNameClient.GetGroupAndFileNameFromFullyQualifiedFileName(Path.GetFileName(fileName),
-                    out group, out unqualifiedFileName);
-                fileInfoList.Add(new FileInfo(group, unqualifiedFileName, inputDirectory));
-            }
-            return fileInfoList;
+            this.Send(fileGroupManager, new eAddFileToTransform(e.Name));
         }
     }
-
-    public class FileInfo
-    {
-        public string Group { get; }
-        public string FileName { get; }
-        public string Directory { get; }
-
-        public FileInfo(string group, string fileName, string directory)
-        {
-            Group = group;
-            FileName = fileName;
-            Directory = directory;
-        }
-    }
-
 }

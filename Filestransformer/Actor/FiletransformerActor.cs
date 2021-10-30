@@ -1,10 +1,13 @@
 ﻿using Filestransformer.Settings;
+using Filestransformer.StateMachines.FileGroupManager;
+using Filestransformer.StateMachines.FileGroupManager.Events;
 using Filestransformer.StateMachines.FileSystemWatcher;
 using Filestransformer.StateMachines.FileSystemWatcher.Events;
 using Filestransformer.Support.Logger;
 using Microsoft.PSharp;
 using System;
 using System.Threading;
+
 namespace Filestransformer.Actor
 {
     public class FiletransformerActor : IActor
@@ -14,6 +17,7 @@ namespace Filestransformer.Actor
 
         private IMachineRuntime psharpRuntime;
         private MachineId filesystemWatcher;
+        private MachineId fileGroupManager;
 
         public FiletransformerActor(Setting settings)
         {
@@ -29,6 +33,7 @@ namespace Filestransformer.Actor
             };
 
             filesystemWatcher = psharpRuntime.CreateMachine(typeof(FileSystemWatcher));
+            fileGroupManager = psharpRuntime.CreateMachine(typeof(FileGroupManager));
         }
 
         public void Run()
@@ -43,8 +48,12 @@ namespace Filestransformer.Actor
             logger.WriteLine($"OutputDirectoryPath: {settings.OutputDirectoryPath}");
 
             // watch input directory to detect for new files
-            //
-            psharpRuntime.SendEvent(filesystemWatcher, new eFileSystemWatcherConfig(settings.InputDirectoryPath, logger));
+            psharpRuntime.SendEvent(filesystemWatcher, new eFileSystemWatcherConfig(logger, settings.InputDirectoryPath, 
+                fileGroupManager));
+
+            // initialize filegroupmanager machine
+            psharpRuntime.SendEvent(fileGroupManager, new eFileGroupManagerConfig(logger, settings.FileGroups, 
+                settings.MaxParallelFileTransformations, settings.InputDirectoryPath, settings.OutputDirectoryPath));
 
             // block forever
             WaitEvent.WaitOne();

@@ -136,6 +136,8 @@
     <Compile Include="Settings\ISettingsProvider.cs" />
     <Compile Include="Settings\Setting.cs" />
     <Compile Include="StateMachines\FileGroupManager\Events\FileGroupManagerEvents.cs" />
+    <Compile Include="StateMachines\FileGroupManager\FileGroupManager.cs" />
+    <Compile Include="StateMachines\FileGroupManager\FileGroupManagerBase.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\Events\FileSystemWatcherEvents.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcher.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcherBase.cs" />
@@ -148,6 +150,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <PSharp Include="StateMachines\FileGroupManager\FileGroupManagerBase.psharp" />
     <PSharp Include="StateMachines\FileSystemWatcher\FileSystemWatcherBase.psharp" />
   </ItemGroup>
   <ItemGroup />
