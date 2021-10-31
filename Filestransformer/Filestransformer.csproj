@@ -142,6 +142,10 @@
     <Compile Include="StateMachines\FileSystemWatcher\Events\FileSystemWatcherEvents.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcher.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcherBase.cs" />
+    <Compile Include="StateMachines\FileTransformers\Events\FileTransformerEvent.cs" />
+    <Compile Include="StateMachines\FileTransformers\FileTransformer.cs" />
+    <Compile Include="StateMachines\FileTransformers\FileTransformerFactory.cs" />
+    <Compile Include="StateMachines\FileTransformers\LowercaseFileTransformer.cs" />
     <Compile Include="StateMachines\TransformationDispatcher\Events\FileTransformationDispatcherEvents.cs" />
     <Compile Include="StateMachines\TransformationDispatcher\FileTransformationDispatcher.cs" />
     <Compile Include="StateMachines\TransformationDispatcher\FileTransformationDispatcherBase.cs" />
@@ -154,6 +158,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <PSharp Include="StateMachines\FileTransformers\FileTransformer.psharp" />
     <PSharp Include="StateMachines\TransformationDispatcher\FileTransformationDispatcherBase.psharp" />
     <PSharp Include="StateMachines\FileGroupManager\FileGroupManagerBase.psharp" />
     <PSharp Include="StateMachines\FileSystemWatcher\FileSystemWatcherBase.psharp" />

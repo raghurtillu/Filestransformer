@@ -19,5 +19,8 @@ namespace Filestransformer.Support.CommandLine
 
         [Option('o', Required = false, HelpText = "Directory contained transformed files")]
         public string OutputDirectoryPath { get; set; }
+
+        [Option('f', Required = false, HelpText = "File chunk size to read in bytes")]
+        public int FileChunkSizeToReadInBytes { get; set; }
     }
 }

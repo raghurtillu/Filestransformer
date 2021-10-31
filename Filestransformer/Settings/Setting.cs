@@ -12,12 +12,16 @@ namespace Filestransformer.Settings
 
         public string OutputDirectoryPath { get; private set; }
 
-        public Setting(int fileGroups, int maxParallelFileTransformations, string inputDirectoryPath, string outputDirectoryPath)
+        public int FileChunkSizeToReadInBytes { get; private set; }
+
+        public Setting(int fileGroups, int maxParallelFileTransformations, 
+            string inputDirectoryPath, string outputDirectoryPath, int fileChunkSizeToReadInBytes)
         {
             this.FileGroups = fileGroups;
             this.MaxParallelFileTransformations = maxParallelFileTransformations;
             this.InputDirectoryPath = inputDirectoryPath;
             this.OutputDirectoryPath = outputDirectoryPath;
+            this.FileChunkSizeToReadInBytes = fileChunkSizeToReadInBytes;
         }
 
         /// <summary>
@@ -48,6 +52,10 @@ namespace Filestransformer.Settings
             }
             this.OutputDirectoryPath = Environment.ExpandEnvironmentVariables(this.OutputDirectoryPath);
 
+            if (otherSettings.FileChunkSizeToReadInBytes != 0)
+            {
+                this.FileChunkSizeToReadInBytes = otherSettings.FileChunkSizeToReadInBytes;
+            }
             return this;
         }
     }

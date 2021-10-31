@@ -1,4 +1,6 @@
 ﻿using Filestransformer.StateMachines.CommonEvents;
+using Filestransformer.StateMachines.FileTransformers;
+using Filestransformer.StateMachines.FileTransformers.Events;
 using Filestransformer.StateMachines.TransformationDispatcher.Events;
 using Filestransformer.Support.Logger;
 using Filestransformer.Support.Utils;
@@ -57,10 +59,12 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 // create transformation machine if not exists
                 if (!activeTransformations.ContainsKey(fileName))
                 {
-                    activeTransformations[fileName] = this.CreateMachine(typeof(FileTransformationDispatcher));
+                    var configEvent = new eFileTransformerEvent(logger, fullyQualifiedFileName, inputDirectory, outputDirectory);
+                    activeTransformations[fileName] = CreateFileTransformerMachine();
+                    this.Send(activeTransformations[fileName], configEvent);
                 }
 
-                logger.WriteLine($"Processed {fullyQualifiedFileName} successfully.");
+                //logger.WriteLine($"Processed {fullyQualifiedFileName} successfully.");
                 pendingTransformations.Dequeue();
             }
 
@@ -70,6 +74,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         protected override bool IsRunningAtFullCapacity() => !(activeTransformations.Count < maximumParallelFileTransformations);
 
         protected override bool HasPendingJobs() => pendingTransformations?.Count > 0;
+
         private string GetFileName(string fullyQualifiedFileName)
         {
             string groupName, fileName;
@@ -92,5 +97,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
 
         private void DisplayCurrentState() => logger.WriteLine($"Group {group} status: " +
                 $"(Active: {activeTransformations.Count}, Pending: {pendingTransformations.Count}, MaxLimit: {maximumParallelFileTransformations})");
+
+        private MachineId CreateFileTransformerMachine() =>
+            this.CreateMachine(FileTransformerFactory.GetFileTransformerType(FileTransformerType.Lowercase));
     }
 }

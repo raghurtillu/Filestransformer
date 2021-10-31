@@ -13,8 +13,10 @@ namespace Filestransformer.Settings
             int maximumParallelFileTransformations = Int32.Parse(ConfigurationManager.AppSettings["MaximumParallelFileTransformations"]);
             string inputDirectoryPath = ConfigurationManager.AppSettings["InputDirectoryPath"];
             string outputDirectoryPath = ConfigurationManager.AppSettings["OutputDirectoryPath"];
+            int fileChunkSizeToReadInBytes = Int32.Parse(ConfigurationManager.AppSettings["FileChunkSizeToReadInBytes"]);
 
-            settings = new Setting(fileGroups, maximumParallelFileTransformations, inputDirectoryPath, outputDirectoryPath);
+            settings = new Setting(fileGroups, maximumParallelFileTransformations, 
+                inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes);
         }
 
         public Setting GetSettings()
