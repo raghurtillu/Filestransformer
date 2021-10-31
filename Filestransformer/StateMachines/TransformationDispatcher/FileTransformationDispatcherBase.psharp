@@ -1,5 +1,6 @@
 ﻿using System;
 using Filestransformer.StateMachines.TransformationDispatcher.Events;
+using Filestransformer.StateMachines.FileTransformers.Events;
 using Filestransformer.StateMachines.CommonEvents;
 using Microsoft.PSharp.Timers;
 
@@ -46,6 +47,12 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                     jump(Dispatching);
                 }
             }
+            
+            on eFileTranformationResponseEvent do 
+            {
+                HandleFileTransformationResponse();
+            }
+            
             defer *;
         }
 
@@ -56,6 +63,12 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 DispatchPendingFileTransformationJobRequests();
                 jump(Active);
             }
+
+            on eFileTranformationResponseEvent do 
+            {
+                HandleFileTransformationResponse();
+            }
+
             defer *;
         }
 
@@ -99,6 +112,11 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 {
                     jump(Dispatching);
                 }
+            }
+
+            on eFileTranformationResponseEvent do 
+            {
+                HandleFileTransformationResponse();
             }
 
             defer *;

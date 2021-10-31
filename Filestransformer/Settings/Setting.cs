@@ -14,14 +14,17 @@ namespace Filestransformer.Settings
 
         public int FileChunkSizeToReadInBytes { get; private set; }
 
+        public string FileEncodingType { get; private set; }
+
         public Setting(int fileGroups, int maxParallelFileTransformations, 
-            string inputDirectoryPath, string outputDirectoryPath, int fileChunkSizeToReadInBytes)
+            string inputDirectoryPath, string outputDirectoryPath, int fileChunkSizeToReadInBytes, string fileEncodingType)
         {
             this.FileGroups = fileGroups;
             this.MaxParallelFileTransformations = maxParallelFileTransformations;
             this.InputDirectoryPath = inputDirectoryPath;
             this.OutputDirectoryPath = outputDirectoryPath;
             this.FileChunkSizeToReadInBytes = fileChunkSizeToReadInBytes;
+            this.FileEncodingType = fileEncodingType;
         }
 
         /// <summary>
@@ -56,6 +59,12 @@ namespace Filestransformer.Settings
             {
                 this.FileChunkSizeToReadInBytes = otherSettings.FileChunkSizeToReadInBytes;
             }
+
+            if (!string.IsNullOrWhiteSpace(otherSettings.FileEncodingType))
+            {
+                this.FileEncodingType = otherSettings.FileEncodingType;
+            }
+
             return this;
         }
     }

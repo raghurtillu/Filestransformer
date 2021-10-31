@@ -15,6 +15,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
 
         protected abstract void DispatchPendingFileTransformationJobRequests();
 
+        protected abstract void HandleFileTransformationResponse();
+
         protected abstract bool IsRunningAtFullCapacity();
 
         protected abstract bool HasPendingJobs();

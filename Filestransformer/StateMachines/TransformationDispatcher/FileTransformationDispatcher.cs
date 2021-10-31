@@ -22,6 +22,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         // file transformation related
         private Queue<string> pendingTransformations;
         private Dictionary<string, MachineId> activeTransformations;
+        private int totalSuccessful = 0;
+        private int totalFailed = 0;
 
         protected override void InitializeFileTransformationDispatcher()
         {
@@ -71,17 +73,44 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             DisplayCurrentState();
         }
 
+        protected override void HandleFileTransformationResponse()
+        {
+            var response = ReceivedEvent as eFileTranformationResponseEvent;
+            var fileName = response.FileName;
+            bool transformationDone = true;
+            if (response.Status == FileTransformationStatus.Success)
+            {
+                totalSuccessful++;
+                logger.WriteLine($"transformation for {fileName} completed successfully, " +
+                    $"transformation time: {response.TimeToComplete?.ToString("G")}");
+            }
+            else if (response.Status == FileTransformationStatus.Failed)
+            {
+                totalFailed++;
+                logger.WriteLine($"transformation for {fileName} failed," +
+                    $" reason: {response.FailureReason}");
+            }
+            else if (response.Status == FileTransformationStatus.InProgress)
+            {
+                logger.WriteLine($"transformation for {fileName} is still in progress");
+                transformationDone = false;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unexpected enum value for {nameof(FileTransformationStatus)}: {response.Status}");
+            }
+
+            if (transformationDone)
+            {
+                // remove transformation machine
+                string unqualifiedFileName = GetFileName(response.FileName);
+                activeTransformations.Remove(unqualifiedFileName);
+            }
+        }
+
         protected override bool IsRunningAtFullCapacity() => !(activeTransformations.Count < maximumParallelFileTransformations);
 
         protected override bool HasPendingJobs() => pendingTransformations?.Count > 0;
-
-        private string GetFileName(string fullyQualifiedFileName)
-        {
-            string groupName, fileName;
-            FullyQualifiedNameClient.GetGroupAndFileNameFromFullyQualifiedFileName(fullyQualifiedFileName,
-                out groupName, out fileName);
-            return fileName;
-        }
 
         protected override void DisplayIdleStateMessage()
         {
@@ -95,10 +124,19 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             this.StartTimer(TimeSpan.FromMilliseconds(100));
         }
 
+        private string GetFileName(string fullyQualifiedFileName)
+        {
+            string groupName, fileName;
+            FullyQualifiedNameClient.GetGroupAndFileNameFromFullyQualifiedFileName(fullyQualifiedFileName,
+                out groupName, out fileName);
+            return fileName;
+        }
+
         private void DisplayCurrentState() => logger.WriteLine($"Group {group} status: " +
                 $"(Active: {activeTransformations.Count}, Pending: {pendingTransformations.Count}, MaxLimit: {maximumParallelFileTransformations})");
 
         private MachineId CreateFileTransformerMachine() =>
             this.CreateMachine(FileTransformerFactory.GetFileTransformerType(FileTransformerType.Lowercase));
+
     }
 }

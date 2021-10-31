@@ -13,9 +13,10 @@ namespace Filestransformer.Settings
             string inputDirectoryPath = op?.InputDirectoryPath ?? "";
             string outputDirectoryPath = op?.OutputDirectoryPath ?? "";
             int fileChunkSizeToReadInBytes = op?.FileChunkSizeToReadInBytes ?? 0;
+            string fileEncodingType = op?.FileEncodingType ?? "";
 
             settings = new Setting(fileGroups, maximumParallelFileTransformations, 
-                inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes);
+                inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes, fileEncodingType);
         }
 
         public Setting GetSettings()

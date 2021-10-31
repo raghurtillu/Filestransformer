@@ -35,21 +35,36 @@ namespace Filestransformer.StateMachines.FileTransformers.Events
         /// <summary>
         /// Status of transformation operation
         /// </summary>
-        public FileTransformationStatus Status { get; set; }
-        
+        public FileTransformationStatus Status { get; }
+
+        /// <summary>
+        /// Transformation filename
+        /// </summary>
+        public string FileName { get; }
+
         /// <summary>
         /// Time when the transformation completed, only valid when status is <seealso cref="FileTransformationStatus.Success"/>
         /// </summary>
-        public DateTime CompletionTime { get; set; }
+        public DateTime? CompletionTime { get; }
 
         /// <summary>
         /// Time to complete the transformation, only valid when status is <seealso cref="FileTransformationStatus.Success"/>
         /// </summary>
-        public TimeSpan TimeToComplete { get; set; }
+        public TimeSpan? TimeToComplete { get; }
 
         /// <summary>
         /// Reason as to why the transformation failed, only valid when status is <seealso cref="FileTransformationStatus.Failed"/>
         /// </summary>
-        public string FailureReason { get; set; }
+        public string FailureReason { get; }
+
+        public eFileTranformationResponseEvent(FileTransformationStatus status, string fileName,
+            DateTime? completionTime, TimeSpan? timeToComplete, string failureReason)
+        {
+            this.Status = status;
+            this.FileName = fileName;
+            this.CompletionTime = completionTime;
+            this.TimeToComplete = timeToComplete;
+            this.FailureReason = failureReason;
+        }
     }
 }
