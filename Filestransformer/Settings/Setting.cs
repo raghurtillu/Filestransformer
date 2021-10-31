@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Filestransformer.Settings
-{
+{    
     public class Setting
     {
         public int FileGroups { get; private set; }
@@ -14,17 +14,17 @@ namespace Filestransformer.Settings
 
         public int FileChunkSizeToReadInBytes { get; private set; }
 
-        public string FileEncodingType { get; private set; }
+        public FileEncoding FileEncoding { get; private set; }
 
         public Setting(int fileGroups, int maxParallelFileTransformations, 
-            string inputDirectoryPath, string outputDirectoryPath, int fileChunkSizeToReadInBytes, string fileEncodingType)
+            string inputDirectoryPath, string outputDirectoryPath, int fileChunkSizeToReadInBytes, FileEncoding fileEncoding)
         {
             this.FileGroups = fileGroups;
             this.MaxParallelFileTransformations = maxParallelFileTransformations;
             this.InputDirectoryPath = inputDirectoryPath;
             this.OutputDirectoryPath = outputDirectoryPath;
             this.FileChunkSizeToReadInBytes = fileChunkSizeToReadInBytes;
-            this.FileEncodingType = fileEncodingType;
+            this.FileEncoding = fileEncoding;
         }
 
         /// <summary>
@@ -60,12 +60,21 @@ namespace Filestransformer.Settings
                 this.FileChunkSizeToReadInBytes = otherSettings.FileChunkSizeToReadInBytes;
             }
 
-            if (!string.IsNullOrWhiteSpace(otherSettings.FileEncodingType))
+            if (otherSettings.FileEncoding != FileEncoding.Unknown)
             {
-                this.FileEncodingType = otherSettings.FileEncodingType;
+                this.FileEncoding = otherSettings.FileEncoding;
             }
 
             return this;
         }
+    }
+
+    public enum FileEncoding
+    {
+        UTF8,
+        ASCII,
+        UTF32,
+        UTF16,
+        Unknown,
     }
 }

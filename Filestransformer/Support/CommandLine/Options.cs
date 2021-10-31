@@ -23,7 +23,7 @@ namespace Filestransformer.Support.CommandLine
         [Option('f', Required = false, HelpText = "File chunk size to read in bytes, e.g. 1024")]
         public int FileChunkSizeToReadInBytes { get; set; }
 
-        [Option('e', Required = false, HelpText = "File encoding type, e.g. UTF8")]
-        public string FileEncodingType { get; set; }
+        [Option('e', Required = false, HelpText = "File encoding, e.g. UTF8")]
+        public string FileEncoding { get; set; }
     }
 }

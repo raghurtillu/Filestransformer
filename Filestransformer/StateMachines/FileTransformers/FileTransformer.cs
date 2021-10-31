@@ -16,7 +16,9 @@ namespace Filestransformer.StateMachines.FileTransformers
         protected string fileName;
         protected string inputDirectory;
         protected string outputDirectory;
+        
         protected DateTime timeOfRequest;
+        protected FileTransformationStatus status;
 
         protected virtual void InitializeFileTransformer()
         {

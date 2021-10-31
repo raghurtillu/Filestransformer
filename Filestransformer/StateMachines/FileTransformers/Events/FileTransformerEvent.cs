@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,11 +24,6 @@ namespace Filestransformer.StateMachines.FileTransformers.Events
             this.InputDirectory = inputDirectory;
             this.OutputDirectory = outputDirectory;
         }
-    }
-
-    public class eFileTransformChunkRequestEvent : Event
-    {
-
     }
 
     public class eFileTranformationResponseEvent : Event
@@ -67,4 +63,20 @@ namespace Filestransformer.StateMachines.FileTransformers.Events
             this.FailureReason = failureReason;
         }
     }
+
+    public class eFileTranformationCompletionEvent : Event
+    {
+
+    }
+
+    public class eFileTransformChunkRequestEvent : Event
+    {
+        public FileStream FileStream { get; }
+
+        public eFileTransformChunkRequestEvent(FileStream fileStream)
+        {
+            this.FileStream = fileStream;
+        }
+    }
+
 }

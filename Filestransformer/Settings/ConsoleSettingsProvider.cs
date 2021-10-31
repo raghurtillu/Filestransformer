@@ -1,4 +1,5 @@
 ﻿using Filestransformer.Support.CommandLine;
+using System;
 
 namespace Filestransformer.Settings
 {
@@ -13,10 +14,12 @@ namespace Filestransformer.Settings
             string inputDirectoryPath = op?.InputDirectoryPath ?? "";
             string outputDirectoryPath = op?.OutputDirectoryPath ?? "";
             int fileChunkSizeToReadInBytes = op?.FileChunkSizeToReadInBytes ?? 0;
-            string fileEncodingType = op?.FileEncodingType ?? "";
+
+            FileEncoding fileEncoding;
+            Enum.TryParse(op?.FileEncoding ?? "unknown", true, out fileEncoding);
 
             settings = new Setting(fileGroups, maximumParallelFileTransformations, 
-                inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes, fileEncodingType);
+                inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes, fileEncoding);
         }
 
         public Setting GetSettings()

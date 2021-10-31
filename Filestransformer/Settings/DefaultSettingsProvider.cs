@@ -14,10 +14,12 @@ namespace Filestransformer.Settings
             string inputDirectoryPath = ConfigurationManager.AppSettings["InputDirectoryPath"];
             string outputDirectoryPath = ConfigurationManager.AppSettings["OutputDirectoryPath"];
             int fileChunkSizeToReadInBytes = Int32.Parse(ConfigurationManager.AppSettings["FileChunkSizeToReadInBytes"]);
-            string fileEncodingType = ConfigurationManager.AppSettings["FileEncodingType"];
+
+            FileEncoding fileEncoding;
+            Enum.TryParse(ConfigurationManager.AppSettings["FileEncoding"], true, out fileEncoding);
 
             settings = new Setting(fileGroups, maximumParallelFileTransformations, 
-                inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes, fileEncodingType);
+                inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes, fileEncoding);
         }
 
         public Setting GetSettings()

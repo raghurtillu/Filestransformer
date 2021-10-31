@@ -16,7 +16,11 @@ namespace Filestransformer.StateMachines.FileTransformers
 
         state Active
         {
-            defer *;
+            on eFileTranformationCompletionEvent do
+            {
+                raise(halt);
+            }
+            //defer *;
         }
     }
 }

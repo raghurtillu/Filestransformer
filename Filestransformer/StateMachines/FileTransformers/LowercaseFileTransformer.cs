@@ -21,14 +21,19 @@ namespace Filestransformer.StateMachines.FileTransformers
 
             try
             {
-                fileStream = File.OpenRead("c:\\users\\rags\\nonExistantFile.txt");
+                fileStream = File.OpenRead(fileName);
+                //fileStream = File.OpenRead("c:\\users\\rags\\nonExistantFile.txt");
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
+                status = FileTransformationStatus.Failed;
                 SendFileTranformationResponse(FileTransformationStatus.Failed, fileName, ex.Message);
-                return;
+                                
+                // send completion status to self and proceed to halt this machine
+                this.Send(Id, new eFileTranformationCompletionEvent());
             }
 
+            status = FileTransformationStatus.InProgress;
             logger.WriteLine($"Initialized {nameof(LowercaseFileTransformer)} machine for {fileName} successfully.");
         }
 
