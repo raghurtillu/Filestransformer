@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Filestransformer.Settings;
+﻿using Filestransformer.Settings;
 using Filestransformer.Support.Logger;
 using Microsoft.PSharp;
+using System;
+using System.IO;
 
 namespace Filestransformer.StateMachines.FileTransformers.Events
 {
@@ -17,13 +13,18 @@ namespace Filestransformer.StateMachines.FileTransformers.Events
         public string FileName { get; }
         public string InputDirectory { get; }
         public string OutputDirectory { get; }
-        public eFileTransformerEvent(MachineId sender, ILogger logger, string fileName, string inputDirectory, string outputDirectory)
+        public int FileChunkSizeToReadInBytes { get; }
+        public FileEncoding FileEncoding { get; }
+        public eFileTransformerEvent(MachineId sender, ILogger logger, string fileName, string inputDirectory, string outputDirectory,
+            int fileChunkSizeToReadInBytes, FileEncoding fileEncoding)
         {
             this.Sender = sender;            
             this.Logger = logger;
             this.FileName = fileName;
             this.InputDirectory = inputDirectory;
             this.OutputDirectory = outputDirectory;
+            this.FileChunkSizeToReadInBytes = fileChunkSizeToReadInBytes;
+            this.FileEncoding = fileEncoding;
         }
     }
 

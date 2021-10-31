@@ -33,7 +33,7 @@ namespace Filestransformer.StateMachines.FileTransformers
         protected override void SendFileTransformationRequest()
         {
             var machine = this.CreateMachine(typeof(LowercaseFileChunkTransformer));
-            this.Send(machine, new eFileChunkTransformRequestEvent(this.Id, inputFileStream));
+            this.Send(machine, new eFileChunkTransformRequestEvent(this.Id, inputFileStream, fileChunkSizeToReadInBytes, fileEncoding));
         }
 
         protected override void HandleFileChunkResponse()

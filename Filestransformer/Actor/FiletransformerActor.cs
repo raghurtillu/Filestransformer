@@ -46,6 +46,8 @@ namespace Filestransformer.Actor
             logger.WriteLine($"MaximumParallelFileTransformations: {settings.MaxParallelFileTransformations}");
             logger.WriteLine($"InputDirectoryPath: {settings.InputDirectoryPath}");
             logger.WriteLine($"OutputDirectoryPath: {settings.OutputDirectoryPath}");
+            logger.WriteLine($"FileChunkSizeToReadInBytes: {settings.FileChunkSizeToReadInBytes}");
+            logger.WriteLine($"FileEncoding: {settings.FileEncoding}");
 
             // watch input directory to detect for new files
             psharpRuntime.SendEvent(filesystemWatcher, new eFileSystemWatcherConfig(logger, settings.InputDirectoryPath, 
@@ -53,7 +55,8 @@ namespace Filestransformer.Actor
 
             // initialize filegroupmanager machine
             psharpRuntime.SendEvent(fileGroupManager, new eFileGroupManagerConfig(logger, settings.FileGroups, 
-                settings.MaxParallelFileTransformations, settings.InputDirectoryPath, settings.OutputDirectoryPath));
+                settings.MaxParallelFileTransformations, settings.InputDirectoryPath, settings.OutputDirectoryPath,
+                settings.FileChunkSizeToReadInBytes, settings.FileEncoding));
 
             // block forever
             WaitEvent.WaitOne();

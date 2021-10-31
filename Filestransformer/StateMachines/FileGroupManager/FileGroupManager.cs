@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Filestransformer.StateMachines.FileGroupManager.Events;
+﻿using Filestransformer.Settings;
 using Filestransformer.StateMachines.CommonEvents;
+using Filestransformer.StateMachines.FileGroupManager.Events;
+using Filestransformer.StateMachines.TransformationDispatcher;
+using Filestransformer.StateMachines.TransformationDispatcher.Events;
 using Filestransformer.Support.Logger;
 using Filestransformer.Support.Utils;
-using Filestransformer.StateMachines.TransformationDispatcher;
 using Microsoft.PSharp;
-using System.IO;
-using Filestransformer.StateMachines.TransformationDispatcher.Events;
+using System;
+using System.Collections.Generic;
 
 namespace Filestransformer.StateMachines.FileGroupManager
 {
@@ -22,6 +19,8 @@ namespace Filestransformer.StateMachines.FileGroupManager
         private int maximumParallelFileTransformations;
         private string inputDirectory;
         private string outputDirectory;
+        private int fileChunkSizeToReadInBytes;
+        private FileEncoding fileEncoding;
 
         // file transformation related
         private Queue<string> pendingTranformations;
@@ -35,6 +34,8 @@ namespace Filestransformer.StateMachines.FileGroupManager
             maximumParallelFileTransformations = config.MaximumParallelFileTransformations;
             inputDirectory = config.InputDirectory;
             outputDirectory = config.OutputDirectory;
+            fileChunkSizeToReadInBytes = config.FileChunkSizeToReadInBytes;
+            fileEncoding = config.FileEncoding;
 
             pendingTranformations = new Queue<string>();
             activeTransformations = new Dictionary<string, MachineId>(StringComparer.OrdinalIgnoreCase);
@@ -63,7 +64,7 @@ namespace Filestransformer.StateMachines.FileGroupManager
                     if (!activeTransformations.ContainsKey(groupName))
                     {
                         var configEvent = new eFileTransformationDispatcherConfig(logger, groupName, maximumParallelFileTransformations,
-                            inputDirectory, outputDirectory);
+                            inputDirectory, outputDirectory, fileChunkSizeToReadInBytes, fileEncoding);
 
                         activeTransformations[groupName] = this.CreateMachine(typeof(FileTransformationDispatcher));
                         this.Send(activeTransformations[groupName], configEvent);

@@ -1,9 +1,8 @@
-﻿using Filestransformer.StateMachines.CommonEvents;
+﻿using Filestransformer.Settings;
 using Filestransformer.StateMachines.FileTransformers.Events;
 using Filestransformer.Support.Logger;
 using Microsoft.PSharp;
 using System;
-using System.IO;
 
 
 namespace Filestransformer.StateMachines.FileTransformers
@@ -15,7 +14,9 @@ namespace Filestransformer.StateMachines.FileTransformers
         protected string fileName;
         protected string inputDirectory;
         protected string outputDirectory;
-        
+        protected int fileChunkSizeToReadInBytes;
+        protected FileEncoding fileEncoding;
+
         protected DateTime timeOfRequest;
         protected FileTransformationStatus status;
         protected string failureReason;
@@ -30,6 +31,8 @@ namespace Filestransformer.StateMachines.FileTransformers
             fileName = config.FileName;
             inputDirectory = config.InputDirectory;
             outputDirectory = config.OutputDirectory;
+            fileChunkSizeToReadInBytes = config.FileChunkSizeToReadInBytes;
+            fileEncoding = config.FileEncoding;
         }
 
         protected abstract void SendFileTransformationRequest();

@@ -1,4 +1,5 @@
-﻿using Filestransformer.StateMachines.CommonEvents;
+﻿using Filestransformer.Settings;
+using Filestransformer.StateMachines.CommonEvents;
 using Filestransformer.StateMachines.FileTransformers;
 using Filestransformer.StateMachines.FileTransformers.Events;
 using Filestransformer.StateMachines.TransformationDispatcher.Events;
@@ -18,6 +19,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         private int maximumParallelFileTransformations;
         private string inputDirectory;
         private string outputDirectory;
+        private int fileChunkSizeToReadInBytes;
+        private FileEncoding fileEncoding;
 
         // file transformation related
         private Queue<string> pendingTransformations;
@@ -33,6 +36,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             maximumParallelFileTransformations = config.MaximumParallelFileTransformations;
             inputDirectory = config.InputDirectory;
             outputDirectory = config.OutputDirectory;
+            fileChunkSizeToReadInBytes = config.FileChunkSizeToReadInBytes;
+            fileEncoding = config.FileEncoding;
 
             pendingTransformations = new Queue<string>();
             activeTransformations = new Dictionary<string, MachineId>(StringComparer.OrdinalIgnoreCase);
@@ -61,7 +66,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 // create transformation machine if not exists
                 if (!activeTransformations.ContainsKey(fileName))
                 {
-                    var configEvent = new eFileTransformerEvent(this.Id, logger, fullyQualifiedFileName, inputDirectory, outputDirectory);
+                    var configEvent = new eFileTransformerEvent(this.Id, logger, fullyQualifiedFileName, inputDirectory, outputDirectory,
+                        fileChunkSizeToReadInBytes, fileEncoding);
                     activeTransformations[fileName] = CreateFileTransformerMachine();
                     this.Send(activeTransformations[fileName], configEvent);
                 }
