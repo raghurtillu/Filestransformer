@@ -7,7 +7,10 @@ using Filestransformer.StateMachines.FileGroupManager.Events;
 using Filestransformer.StateMachines.CommonEvents;
 using Filestransformer.Support.Logger;
 using Filestransformer.Support.Utils;
+using Filestransformer.StateMachines.TransformationDispatcher;
+using Microsoft.PSharp;
 using System.IO;
+using Filestransformer.StateMachines.TransformationDispatcher.Events;
 
 namespace Filestransformer.StateMachines.FileGroupManager
 {
@@ -21,7 +24,8 @@ namespace Filestransformer.StateMachines.FileGroupManager
         private string outputDirectory;
 
         // file transformation related
-        private Queue<string> pendingFileTransformationJobRequests;
+        private Queue<string> pendingTranformations;
+        private Dictionary<string, MachineId> activeTransformations;
 
         protected override void InitializeFileGroupManager()
         {
@@ -41,32 +45,44 @@ namespace Filestransformer.StateMachines.FileGroupManager
                 throw new ArgumentException($"Invalid value '{maximumParallelFileTransformations}' specified.");
             }
 
-            pendingFileTransformationJobRequests = new Queue<string>();
+            pendingTranformations = new Queue<string>();
+            activeTransformations = new Dictionary<string, MachineId>(StringComparer.OrdinalIgnoreCase);
+
             logger.WriteLine($"Initialized {nameof(FileGroupManager)} machine successfully.");
         }
 
         protected override void DispatchPendingFileTransformationJobRequests()
         {
-            string groupName, unqualifiedFileName;
-
             // TODO cap this to max limit, for now drain the list
-            while (pendingFileTransformationJobRequests.Count > 0)
+            while (pendingTranformations.Count > 0)
             {
-                var fileName = pendingFileTransformationJobRequests.Peek();
-                pendingFileTransformationJobRequests.Dequeue();
+                string groupName, unqualifiedFileName;
 
+                var fileName = pendingTranformations.Peek();
                 FullyQualifiedNameClient.GetGroupAndFileNameFromFullyQualifiedFileName(fileName,
-                    out groupName, out unqualifiedFileName);
+                        out groupName, out unqualifiedFileName);
                 if (string.IsNullOrWhiteSpace(groupName))
                 {
                     logger.WriteLine($"File {fileName} is in invalidformat, missing group name, " +
                         $"will skip processing this request");
-                    continue;
                 }
                 else
                 {
-                    logger.WriteLine($"Dispatching {fileName} request");
+                    // create dispatcher machine if not exists
+                    if (!activeTransformations.ContainsKey(groupName))
+                    {
+                        var configEvent = new eFileTransformationDispatcherConfig(logger, groupName, maximumParallelFileTransformations,
+                            inputDirectory, outputDirectory);
+
+                        activeTransformations[groupName] = this.CreateMachine(typeof(FileTransformationDispatcher));
+                        this.Send(activeTransformations[groupName], configEvent);
+                    }
+
+                    // send transformation request to the dispatcher
+                    this.Send(activeTransformations[groupName], new eAddFileToTransform(fileName));
                 }
+
+                pendingTranformations.Dequeue();
             }
         }
 
@@ -89,8 +105,8 @@ namespace Filestransformer.StateMachines.FileGroupManager
 
         private void HandleAddFileToTransform(string fullyQualifiedFileName)
         {
-            logger.WriteLine($"Adding file to transform request {fullyQualifiedFileName}");
-            pendingFileTransformationJobRequests.Enqueue(fullyQualifiedFileName);
+            //logger.WriteLine($"Adding file to dispatcher {fullyQualifiedFileName}");
+            pendingTranformations.Enqueue(fullyQualifiedFileName);
         }
 
         #endregion

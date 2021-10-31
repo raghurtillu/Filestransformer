@@ -31,7 +31,7 @@
                     // valid format group1.file1.txt in the first place
 
                     // empty out the group name and simply return unqualifiedFileName
-                    unqualifiedFileName = group + unqualifiedFileNameSplits[0];
+                    unqualifiedFileName = GetFullyQualifiedFileName(group, unqualifiedFileNameSplits[0]);
                     group = string.Empty;
                 }
             }

@@ -1,10 +1,5 @@
-﻿using System;
+﻿using Microsoft.PSharp;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Filestransformer.Support.Logger;
-using Microsoft.PSharp;
 
 namespace Filestransformer.StateMachines.CommonEvents
 {

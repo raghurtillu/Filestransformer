@@ -135,12 +135,16 @@
     <Compile Include="Settings\DefaultSettingsProvider.cs" />
     <Compile Include="Settings\ISettingsProvider.cs" />
     <Compile Include="Settings\Setting.cs" />
+    <Compile Include="StateMachines\CommonEvents\FileTransformationEvents.cs" />
     <Compile Include="StateMachines\FileGroupManager\Events\FileGroupManagerEvents.cs" />
     <Compile Include="StateMachines\FileGroupManager\FileGroupManager.cs" />
     <Compile Include="StateMachines\FileGroupManager\FileGroupManagerBase.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\Events\FileSystemWatcherEvents.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcher.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcherBase.cs" />
+    <Compile Include="StateMachines\TransformationDispatcher\Events\FileTransformationDispatcherEvents.cs" />
+    <Compile Include="StateMachines\TransformationDispatcher\FileTransformationDispatcher.cs" />
+    <Compile Include="StateMachines\TransformationDispatcher\FileTransformationDispatcherBase.cs" />
     <Compile Include="Support\CommandLine\Options.cs" />
     <Compile Include="Support\Logger\ConsoleLogger.cs" />
     <Compile Include="Support\Logger\ILogger.cs" />
@@ -150,6 +154,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <PSharp Include="StateMachines\TransformationDispatcher\FileTransformationDispatcherBase.psharp" />
     <PSharp Include="StateMachines\FileGroupManager\FileGroupManagerBase.psharp" />
     <PSharp Include="StateMachines\FileSystemWatcher\FileSystemWatcherBase.psharp" />
   </ItemGroup>
