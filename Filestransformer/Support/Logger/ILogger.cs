@@ -8,9 +8,10 @@ namespace Filestransformer.Support.Logger
     [Flags]
     public enum LogLevelContext
     {
+        Verbose = 0,
         Info = 1,
-        // Warning = 2,
-        // Error = 4,
+        Warning = 2,
+        Error = 3
     }
 
     /// <summary>
@@ -18,6 +19,6 @@ namespace Filestransformer.Support.Logger
     /// </summary>
     public interface ILogger
     {
-        void WriteLine(string message, LogLevelContext logLevelContext = LogLevelContext.Info);
+        void WriteLine(string message, LogLevelContext logLevelContext = LogLevelContext.Verbose);
     }
 }

@@ -27,7 +27,7 @@ namespace Filestransformer.Actor
             {
                 string errorMessage = Environment.NewLine + $"An error occurred in one or more PSharp state machines: {ex.ToString()}" +
                     Environment.NewLine + Environment.NewLine + "The program cannot continue any further, press enter to exit the program.";
-                LoggerFactory.GetLogger().WriteLine(errorMessage);
+                LoggerFactory.GetLogger().WriteLine(errorMessage, LogLevelContext.Error);
                 Console.ReadKey();
                 Environment.Exit(1);
             };

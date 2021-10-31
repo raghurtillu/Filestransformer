@@ -52,7 +52,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             int maxIntake = maximumParallelFileTransformations - activeTransformations.Count;
             maxIntake = Math.Min(maxIntake, pendingTransformations.Count);
 
-            logger.WriteLine($"{group} dispatcher will process {maxIntake} request in this epoch ");
+            logger.WriteLine($"{group} dispatcher will process {maxIntake} request in this epoch");
             while (maxIntake-- > 0)
             {
                 string fullyQualifiedFileName = pendingTransformations.Peek();
@@ -82,13 +82,13 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             {
                 totalSuccessful++;
                 logger.WriteLine($"Transformation for {fileName} completed successfully, " +
-                    $"transformation time: {response.TimeToComplete?.ToString("G")}");
+                    $"transformation time: {response.TimeToComplete?.ToString("G")}", LogLevelContext.Info);
             }
             else if (response.Status == FileTransformationStatus.Failed)
             {
                 totalFailed++;
                 logger.WriteLine($"transformation for {fileName} failed," +
-                    $" reason: {response.FailureReason}");
+                    $" reason: {response.FailureReason}", LogLevelContext.Error);
             }
             else if (response.Status == FileTransformationStatus.InProgress)
             {
@@ -136,7 +136,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
 
         private void DisplayCurrentState() => logger.WriteLine($"Group {group} status: " +
                 $"(Active: {activeTransformations.Count}, Pending: {pendingTransformations.Count}, MaxLimit: {maximumParallelFileTransformations}, " +
-                $"Total completed: {totalSuccessful + totalFailed}, Successful: {totalSuccessful}, Failed: {totalFailed})");
+                $"Total completed: {totalSuccessful + totalFailed}, Total successful: {totalSuccessful}, Total failed: {totalFailed})", LogLevelContext.Warning);
 
         private MachineId CreateFileTransformerMachine() =>
             this.CreateMachine(FileTransformerFactory.GetFileTransformerType(FileTransformerType.Lowercase));

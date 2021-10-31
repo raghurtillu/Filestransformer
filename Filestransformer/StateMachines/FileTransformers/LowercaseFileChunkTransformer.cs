@@ -16,8 +16,7 @@ namespace Filestransformer.StateMachines.FileTransformers
 
             try
             {
-                //string str = GetFileChunkAsString(request.FileStream, request.FileChunkSizeToReadInBytes, request.FileEncoding);
-                string str = GetFileChunkAsString(request.FileStream, 4, request.FileEncoding);
+                string str = GetFileChunkAsString(request.FileStream, request.FileChunkSizeToReadInBytes, request.FileEncoding);
                 if (string.IsNullOrWhiteSpace(str))
                 {
                     // file read completely

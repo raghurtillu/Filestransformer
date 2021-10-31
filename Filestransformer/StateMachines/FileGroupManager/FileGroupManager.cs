@@ -55,7 +55,7 @@ namespace Filestransformer.StateMachines.FileGroupManager
                 if (string.IsNullOrWhiteSpace(groupName))
                 {
                     logger.WriteLine($"File {fileName} is in invalidformat, missing group name, " +
-                        $"will skip processing this request");
+                        $"will skip processing this request", LogLevelContext.Warning);
                 }
                 else
                 {

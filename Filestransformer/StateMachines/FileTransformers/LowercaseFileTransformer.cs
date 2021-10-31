@@ -17,8 +17,6 @@ namespace Filestransformer.StateMachines.FileTransformers
             {
                 inputFileStream = File.OpenRead(Path.Combine(inputDirectory, fileName));
                 outputFileStream = File.OpenWrite(Path.Combine(outputDirectory, fileName));
-                //outputFileStream = File.OpenWrite("c:\\users\\rags\\nonExistantFile.txt");
-                //fileStream = File.OpenRead("c:\\users\\rags\\nonExistantFile.txt");
             }
             catch (Exception ex) 
             {
@@ -30,7 +28,6 @@ namespace Filestransformer.StateMachines.FileTransformers
             }
 
             status = FileTransformationStatus.InProgress;
-            //logger.WriteLine($"Initialized {nameof(LowercaseFileTransformer)} machine for {fileName} successfully.");
         }
 
         protected override void SendFileTransformationRequest()
@@ -45,6 +42,7 @@ namespace Filestransformer.StateMachines.FileTransformers
             if (response.Status == FileTransformationStatus.Success)
             {
                 status = FileTransformationStatus.Success;
+
                 outputFileStream.Write(response.TransformedBytes, 0, response.TransformedBytes.Length);
                 outputFileStream.Flush();
             }
