@@ -59,7 +59,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 // create transformation machine if not exists
                 if (!activeTransformations.ContainsKey(fileName))
                 {
-                    var configEvent = new eFileTransformerEvent(logger, fullyQualifiedFileName, inputDirectory, outputDirectory);
+                    var configEvent = new eFileTransformerEvent(this.Id, logger, fullyQualifiedFileName, inputDirectory, outputDirectory);
                     activeTransformations[fileName] = CreateFileTransformerMachine();
                     this.Send(activeTransformations[fileName], configEvent);
                 }

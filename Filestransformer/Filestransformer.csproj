@@ -143,6 +143,7 @@
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcher.cs" />
     <Compile Include="StateMachines\FileSystemWatcher\FileSystemWatcherBase.cs" />
     <Compile Include="StateMachines\FileTransformers\Events\FileTransformerEvent.cs" />
+    <Compile Include="StateMachines\FileTransformers\FileTransformationStatus.cs" />
     <Compile Include="StateMachines\FileTransformers\FileTransformer.cs" />
     <Compile Include="StateMachines\FileTransformers\FileTransformerFactory.cs" />
     <Compile Include="StateMachines\FileTransformers\LowercaseFileTransformer.cs" />
