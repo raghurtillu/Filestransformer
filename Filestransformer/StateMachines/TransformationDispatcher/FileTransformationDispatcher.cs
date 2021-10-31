@@ -81,7 +81,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             if (response.Status == FileTransformationStatus.Success)
             {
                 totalSuccessful++;
-                logger.WriteLine($"transformation for {fileName} completed successfully, " +
+                logger.WriteLine($"Transformation for {fileName} completed successfully, " +
                     $"transformation time: {response.TimeToComplete?.ToString("G")}");
             }
             else if (response.Status == FileTransformationStatus.Failed)
@@ -106,6 +106,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 string unqualifiedFileName = GetFileName(response.FileName);
                 activeTransformations.Remove(unqualifiedFileName);
             }
+            
+            DisplayCurrentState();
         }
 
         protected override bool IsRunningAtFullCapacity() => !(activeTransformations.Count < maximumParallelFileTransformations);
@@ -121,7 +123,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         protected override void SetRetryTimer()
         {
             activeTransformations.Clear();
-            this.StartTimer(TimeSpan.FromMilliseconds(100));
+            this.StartTimer(TimeSpan.FromMilliseconds(10000));
         }
 
         private string GetFileName(string fullyQualifiedFileName)
@@ -133,7 +135,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         }
 
         private void DisplayCurrentState() => logger.WriteLine($"Group {group} status: " +
-                $"(Active: {activeTransformations.Count}, Pending: {pendingTransformations.Count}, MaxLimit: {maximumParallelFileTransformations})");
+                $"(Active: {activeTransformations.Count}, Pending: {pendingTransformations.Count}, MaxLimit: {maximumParallelFileTransformations}, " +
+                $"Total completed: {totalSuccessful + totalFailed}, Successful: {totalSuccessful}, Failed: {totalFailed})");
 
         private MachineId CreateFileTransformerMachine() =>
             this.CreateMachine(FileTransformerFactory.GetFileTransformerType(FileTransformerType.Lowercase));

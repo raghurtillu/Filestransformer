@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Filestransformer.StateMachines.FileTransformers.Events;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Filestransformer.StateMachines.CommonEvents;
-using Filestransformer.StateMachines.FileTransformers.Events;
-using Filestransformer.Support.Logger;
-using Microsoft.PSharp;
 
 namespace Filestransformer.StateMachines.FileTransformers
 {
@@ -37,7 +30,7 @@ namespace Filestransformer.StateMachines.FileTransformers
             }
 
             status = FileTransformationStatus.InProgress;
-            logger.WriteLine($"Initialized {nameof(LowercaseFileTransformer)} machine for {fileName} successfully.");
+            //logger.WriteLine($"Initialized {nameof(LowercaseFileTransformer)} machine for {fileName} successfully.");
         }
 
         protected override void SendFileTransformationRequest()
