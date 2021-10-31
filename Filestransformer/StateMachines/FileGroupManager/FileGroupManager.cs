@@ -36,15 +36,6 @@ namespace Filestransformer.StateMachines.FileGroupManager
             inputDirectory = config.InputDirectory;
             outputDirectory = config.OutputDirectory;
 
-            if (fileGroups <= 0)
-            {
-                throw new ArgumentException($"Invalid value '{fileGroups}' specified.");
-            }
-            else if (maximumParallelFileTransformations <= 0)
-            {
-                throw new ArgumentException($"Invalid value '{maximumParallelFileTransformations}' specified.");
-            }
-
             pendingTranformations = new Queue<string>();
             activeTransformations = new Dictionary<string, MachineId>(StringComparer.OrdinalIgnoreCase);
 

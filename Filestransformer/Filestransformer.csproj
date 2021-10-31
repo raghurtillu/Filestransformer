@@ -146,6 +146,7 @@
     <Compile Include="StateMachines\FileTransformers\FileTransformationStatus.cs" />
     <Compile Include="StateMachines\FileTransformers\FileTransformer.cs" />
     <Compile Include="StateMachines\FileTransformers\FileTransformerFactory.cs" />
+    <Compile Include="StateMachines\FileTransformers\LowercaseFileChunkTransformer.cs" />
     <Compile Include="StateMachines\FileTransformers\LowercaseFileTransformer.cs" />
     <Compile Include="StateMachines\TransformationDispatcher\Events\FileTransformationDispatcherEvents.cs" />
     <Compile Include="StateMachines\TransformationDispatcher\FileTransformationDispatcher.cs" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <PSharp Include="StateMachines\FileTransformers\LowercaseFileChunkTransformer.psharp" />
     <PSharp Include="StateMachines\FileTransformers\FileTransformer.psharp" />
     <PSharp Include="StateMachines\TransformationDispatcher\FileTransformationDispatcherBase.psharp" />
     <PSharp Include="StateMachines\FileGroupManager\FileGroupManagerBase.psharp" />

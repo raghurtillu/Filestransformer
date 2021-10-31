@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Filestransformer.Settings;
 using Filestransformer.Support.Logger;
 using Microsoft.PSharp;
 
@@ -66,17 +67,56 @@ namespace Filestransformer.StateMachines.FileTransformers.Events
 
     public class eFileTranformationCompletionEvent : Event
     {
-
+        
     }
 
-    public class eFileTransformChunkRequestEvent : Event
+    public class eFileChunkTransformRequestEvent : Event
     {
+        public MachineId Sender { get; }
+
         public FileStream FileStream { get; }
 
-        public eFileTransformChunkRequestEvent(FileStream fileStream)
+        public int FileChunkSizeToReadInBytes { get; }
+
+        public FileEncoding FileEncoding { get; }
+
+        public eFileChunkTransformRequestEvent(MachineId sender, FileStream fileStream,
+            int fileChunkSizeToReadInBytes = 1024, FileEncoding fileEncoding = FileEncoding.UTF8)
         {
+            this.Sender = sender;
             this.FileStream = fileStream;
+            this.FileChunkSizeToReadInBytes = fileChunkSizeToReadInBytes;
+            this.FileEncoding = fileEncoding;
         }
     }
 
+    public class eFileChunkTransformResponseEvent : Event
+    {
+        /// <summary>
+        /// Status of file chunk transformation operation
+        /// </summary>
+        public FileTransformationStatus Status { get; }
+
+        /// <summary>
+        /// Transformed file chunk in bytes
+        /// </summary>
+        public byte[] TransformedBytes { get; }
+
+        /// <summary>
+        /// Reason as to why the transformation failed, only valid when status is <seealso cref="FileTransformationStatus.Failed"/>
+        /// </summary>
+        public string FailureReason { get; }
+
+        public eFileChunkTransformResponseEvent(FileTransformationStatus status, byte[] transformedBytes, string failureReason)
+        {
+            this.Status = status;
+            this.TransformedBytes = transformedBytes;
+            this.FailureReason = failureReason;
+        }
+    }
+
+    public class eFileChunkTransformCompletionEvent : Event
+    {
+
+    }
 }

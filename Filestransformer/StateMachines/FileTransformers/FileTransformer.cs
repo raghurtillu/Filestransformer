@@ -10,7 +10,6 @@ namespace Filestransformer.StateMachines.FileTransformers
 {
     public abstract partial class FileTransformer : Machine
     {
-        protected eFileTransformerEvent currentRequest;
         protected MachineId sender;
         protected ILogger logger;
         protected string fileName;
@@ -19,17 +18,26 @@ namespace Filestransformer.StateMachines.FileTransformers
         
         protected DateTime timeOfRequest;
         protected FileTransformationStatus status;
+        protected string failureReason;
 
         protected virtual void InitializeFileTransformer()
         {
-            currentRequest = ReceivedEvent as eFileTransformerEvent;
+            var config = ReceivedEvent as eFileTransformerEvent;
             timeOfRequest = DateTime.UtcNow;
 
-            sender = currentRequest.Sender;
-            logger = currentRequest.Logger;
-            fileName = currentRequest.FileName;
-            inputDirectory = currentRequest.InputDirectory;
-            outputDirectory = currentRequest.OutputDirectory;
+            sender = config.Sender;
+            logger = config.Logger;
+            fileName = config.FileName;
+            inputDirectory = config.InputDirectory;
+            outputDirectory = config.OutputDirectory;
         }
+
+        protected abstract void SendFileTransformationRequest();
+
+        protected abstract void HandleFileChunkResponse();
+
+        protected abstract bool CompletedReadingInputFile();
+
+        public abstract void HandleFileTransformationRequestCompleted();
     }
 }

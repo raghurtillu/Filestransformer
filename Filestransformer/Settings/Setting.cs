@@ -65,6 +65,13 @@ namespace Filestransformer.Settings
                 this.FileEncoding = otherSettings.FileEncoding;
             }
 
+            if (this.FileGroups <= 0) { throw new ArgumentException($"Invalid value '{this.FileGroups}' specified."); }
+            if (this.MaxParallelFileTransformations <= 0) { throw new ArgumentException($"Invalid value '{this.MaxParallelFileTransformations}' specified."); }
+            if (string.IsNullOrWhiteSpace(this.InputDirectoryPath)) { throw new ArgumentException($"Invalid value '{this.InputDirectoryPath}' specified."); }
+            if (string.IsNullOrWhiteSpace(this.OutputDirectoryPath)) { throw new ArgumentException($"Invalid value '{this.OutputDirectoryPath}' specified."); }
+            if (this.FileChunkSizeToReadInBytes <= 0) { throw new ArgumentException($"Invalid value '{this.FileChunkSizeToReadInBytes}' specified."); }
+            if (this.FileEncoding == FileEncoding.Unknown) { throw new ArgumentException($"Invalid value '{this.FileEncoding}' specified."); }
+
             return this;
         }
     }

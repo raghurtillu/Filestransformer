@@ -16,11 +16,27 @@ namespace Filestransformer.StateMachines.FileTransformers
 
         state Active
         {
+            entry
+            {
+                if (CompletedReadingInputFile())
+                {
+                    this.Send(Id, new eFileTranformationCompletionEvent());
+                }
+                else
+                {
+                    SendFileTransformationRequest();
+                }
+            }
+            on eFileChunkTransformResponseEvent do
+            {
+                HandleFileChunkResponse();
+                jump(Active);
+            }
             on eFileTranformationCompletionEvent do
             {
+                HandleFileTransformationRequestCompleted();
                 raise(halt);
             }
-            //defer *;
         }
     }
 }
