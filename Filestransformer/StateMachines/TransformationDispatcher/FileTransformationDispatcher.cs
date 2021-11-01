@@ -28,6 +28,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         private int totalSuccessful = 0;
         private int totalFailed = 0;
 
+        private TimeSpan TIMER_RETRY_INTERVAL = TimeSpan.FromSeconds(10);
+
         protected override void InitializeFileTransformationDispatcher()
         {
             var config = ReceivedEvent as eFileTransformationDispatcherConfig;
@@ -120,16 +122,22 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
 
         protected override bool HasPendingJobs() => pendingTransformations?.Count > 0;
 
-        protected override void DisplayIdleStateMessage()
+        protected override void DisplayIdleStateMessage(bool timerExpired)
         {
-            logger.WriteLine($"Dispatcher {group} is running at full capactity, will retry in 10 seconds");
+            if (timerExpired)
+            {
+                logger.WriteLine($"Dispatcher {group} timer expired, checking if there are any pending or active transformations to process");
+            }
+            else
+            {
+                logger.WriteLine($"Dispatcher {group} is running at full capactity, will retry in {TIMER_RETRY_INTERVAL.ToString(@"ss")} seconds");
+            }            
             DisplayCurrentState();
         }
 
         protected override void SetRetryTimer()
         {
-            activeTransformations.Clear();
-            this.StartTimer(TimeSpan.FromMilliseconds(10000));
+            this.StartPeriodicTimer(TIMER_RETRY_INTERVAL, TIMER_RETRY_INTERVAL);
         }
 
         private string GetFileName(string fullyQualifiedFileName)

@@ -77,12 +77,13 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         {
             entry
             {
-                DisplayIdleStateMessage();
+                DisplayIdleStateMessage(false);
                 SetRetryTimer();
             }
 
             on TimerElapsedEvent do
             {
+                DisplayIdleStateMessage(true);
                 if (HasPendingJobs())
                 {
                     if (IsRunningAtFullCapacity())
@@ -101,9 +102,9 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 }
             }
 
-            on eAddFileToTransform do
+            on eFileTranformationResponseEvent do 
             {
-                HandleAddFileToTransform();
+                HandleFileTransformationResponse();
                 if (IsRunningAtFullCapacity())
                 {
                     jump(Idle);
@@ -112,11 +113,6 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 {
                     jump(Dispatching);
                 }
-            }
-
-            on eFileTranformationResponseEvent do 
-            {
-                HandleFileTransformationResponse();
             }
 
             defer *;

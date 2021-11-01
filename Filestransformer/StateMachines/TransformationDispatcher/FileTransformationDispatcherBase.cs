@@ -21,7 +21,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
 
         protected abstract bool HasPendingJobs();
 
-        protected abstract void DisplayIdleStateMessage();
+        protected abstract void DisplayIdleStateMessage(bool timerExpired);
 
         protected abstract void SetRetryTimer();
     }
