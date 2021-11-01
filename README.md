@@ -34,7 +34,7 @@ CODE HYGIENE:
 -	You should accommodate and argue design decisions in code comments (if you believe in them strongly).
 
 ## Tool usage
-Syntax
+### Syntax
 FileTransformer.exe [-n <Int32>] [-p <Int32>] [-i <String>] [-o <String>] [-f <Int32>] [-e <Int32>]
 -n : number of file groups, e.g., 3
 -p : maximum number of transformations in an epoch, e.g., 3
