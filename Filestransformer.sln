@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filestransformer", "Filestransformer\Filestransformer.csproj", "{8A23859E-3F94-4306-AAA3-213A0BC4EC3D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{F989AC79-5DC8-4D55-972B-FD245C732423}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilestransformerUnitTests", "FilestransformerUnitTests\FilestransformerUnitTests.csproj", "{8FC5051B-8244-4852-9CB5-74DD4013B459}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filestransformer", "Filestransformer", "{40DD2771-F4EB-4162-A1A2-AFB732761A20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +21,17 @@ Global
 		{8A23859E-3F94-4306-AAA3-213A0BC4EC3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A23859E-3F94-4306-AAA3-213A0BC4EC3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A23859E-3F94-4306-AAA3-213A0BC4EC3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FC5051B-8244-4852-9CB5-74DD4013B459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FC5051B-8244-4852-9CB5-74DD4013B459}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FC5051B-8244-4852-9CB5-74DD4013B459}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FC5051B-8244-4852-9CB5-74DD4013B459}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A23859E-3F94-4306-AAA3-213A0BC4EC3D} = {40DD2771-F4EB-4162-A1A2-AFB732761A20}
+		{8FC5051B-8244-4852-9CB5-74DD4013B459} = {F989AC79-5DC8-4D55-972B-FD245C732423}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7826A20B-ADF1-4BF1-8A41-761F66F90D2F}

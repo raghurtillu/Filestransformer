@@ -19,7 +19,19 @@
         public static void GetGroupAndFileNameFromFullyQualifiedFileName(string fullyQualifiedFileName,
             out string group, out string unqualifiedFileName)
         {
+            if (string.IsNullOrWhiteSpace(fullyQualifiedFileName))
+            {
+                group = string.Empty;
+                unqualifiedFileName = string.Empty;
+                return;
+            }
+
+            group = string.Empty;
+            unqualifiedFileName = string.Empty;
+
             var splits = SplitFullyQualfiedResource(fullyQualifiedFileName, 2);
+            if (splits.Length == 0) { return; }
+            else if (splits.Length == 1) { unqualifiedFileName = splits[0]; return; }
             group = splits[0];
             unqualifiedFileName = splits[1];
             {
