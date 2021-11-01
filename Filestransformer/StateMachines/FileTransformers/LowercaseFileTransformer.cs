@@ -1,6 +1,7 @@
 ﻿using Filestransformer.StateMachines.FileTransformers.Events;
 using System;
 using System.IO;
+using System.Threading;
 
 namespace Filestransformer.StateMachines.FileTransformers
 {
@@ -13,19 +14,52 @@ namespace Filestransformer.StateMachines.FileTransformers
         {
             base.InitializeFileTransformer();
 
-            try
+            bool init = false;
+            int retryAttempt = 0;
+            Exception lastException = null;
+
+            do
             {
-                inputFileStream = File.OpenRead(Path.Combine(inputDirectory, fileName));
-                outputFileStream = File.OpenWrite(Path.Combine(outputDirectory, fileName));
-            }
-            catch (Exception ex) 
+                try
+                {
+                    inputFileStream = File.OpenRead(Path.Combine(inputDirectory, fileName));
+                    outputFileStream = File.OpenWrite(Path.Combine(outputDirectory, fileName));
+                    init = true;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    // todo: weird code for retry, hitting INPUT file stream being used by another process in win 11 :(, proc explorer doesnt show up anything
+                    // retrying after sometime seems to work
+                    lastException = ex;
+                    status = FileTransformationStatus.Failed;
+                    Thread.Sleep(1000);
+                }
+            } while (retryAttempt < 3);
+
+            if (!init && retryAttempt >= 3)
             {
                 status = FileTransformationStatus.Failed;
-                SendFileTranformationResponse(FileTransformationStatus.Failed, fileName, ex.Message);
-                                
+                SendFileTranformationResponse(FileTransformationStatus.Failed, fileName, lastException?.Message);
+
                 // send completion status to self and proceed to halt this machine
                 this.Send(Id, new eFileTranformationCompletionEvent());
             }
+
+            //try
+            //{
+            //    //inputFileStream = File.OpenRead(Path.Combine(inputDirectory, fileName));
+            //    inputFileStream = File.Open(Path.Combine(inputDirectory, fileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            //    outputFileStream = File.OpenWrite(Path.Combine(outputDirectory, fileName));
+            //}
+            //catch (Exception ex) 
+            //{
+            //    status = FileTransformationStatus.Failed;
+            //    SendFileTranformationResponse(FileTransformationStatus.Failed, fileName, ex.Message);
+
+            //    // send completion status to self and proceed to halt this machine
+            //    this.Send(Id, new eFileTranformationCompletionEvent());
+            //}
 
             status = FileTransformationStatus.InProgress;
         }

@@ -49,6 +49,10 @@ namespace Filestransformer.Actor
             logger.WriteLine($"FileChunkSizeToReadInBytes: {settings.FileChunkSizeToReadInBytes}");
             logger.WriteLine($"FileEncoding: {settings.FileEncoding}");
 
+            // create input and output directories if not existing
+            CreateDirectoryIfNotExists(settings.InputDirectoryPath);
+            CreateDirectoryIfNotExists(settings.OutputDirectoryPath);
+
             // watch input directory to detect for new files
             psharpRuntime.SendEvent(filesystemWatcher, new eFileSystemWatcherConfig(logger, settings.InputDirectoryPath, 
                 fileGroupManager));
@@ -60,6 +64,22 @@ namespace Filestransformer.Actor
 
             // block forever
             WaitEvent.WaitOne();
+        }
+
+        private void CreateDirectoryIfNotExists(string path)
+        {
+            var logger = LoggerFactory.GetLogger();
+            try
+            {
+                if (System.IO.Directory.Exists(path)) { return; }
+                System.IO.Directory.CreateDirectory(path);
+                logger.WriteLine($"Created directory '{path}' successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.WriteLine("");
+                logger.WriteLine($"An error occurred while creating directory {path}: {ex.ToString()}");
+            }
         }
     }
 }
