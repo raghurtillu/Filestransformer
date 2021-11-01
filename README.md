@@ -35,13 +35,13 @@ CODE HYGIENE:
 
 ## Tool usage
 ### Syntax
-FileTransformer.exe [-n <Int32>] [-p <Int32>] [-i <String>] [-o <String>] [-f <Int32>] [-e <Int32>]
--n : number of file groups, e.g., 3
--p : maximum number of transformations in an epoch, e.g., 3
--i : input directory where the file transformations will reside, e.g., c:\users\raghura\appdata\localtemp\inputs
--o : output directory where the completed file transformations will reside e.g., c:\users\raghura\appdata\localtemp\outputs
--f : number of bytes for file transformation to transform at a time e.g., 1024
--e : file encoding type of transformed file e.g., utf8
+FileTransformer.exe [-n <Int32>] [-p <Int32>] [-i <String>] [-o <String>] [-f <Int32>] [-e <Int32>] <br>
+-n : number of file groups, e.g., 3 <br>
+-p : maximum number of transformations in an epoch, e.g., 3 <br>
+-i : input directory where the file transformations will reside, e.g., c:\users\raghura\appdata\localtemp\inputs <br>
+-o : output directory where the completed file transformations will reside e.g., c:\users\raghura\appdata\localtemp\outputs <br>
+-f : number of bytes for file transformation to transform at a time e.g., 1024 <br>
+-e : file encoding type of transformed file e.g., utf8 <br>
  
 This tool uses [Microsoft Coyote](https://microsoft.github.io/coyote/), formerly known as PSharp to achieve the results
 
