@@ -26,6 +26,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 {
                     if (IsRunningAtFullCapacity())
                     {
+                        // if the orchestrator is running at full capacity, then transition to Idle state
                         jump(Idle);
                     }
                     else

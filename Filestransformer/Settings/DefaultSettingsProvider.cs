@@ -3,6 +3,9 @@ using System.Configuration;
 
 namespace Filestransformer.Settings
 {
+    /// <summary>
+    /// Setting provider backed by App.config, is the default settings if not overriden from console
+    /// </summary>
     public class DefaultSettingsProvider : ISettingsProvider
     {
         private readonly Setting settings;
@@ -22,6 +25,10 @@ namespace Filestransformer.Settings
                 inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes, fileEncoding);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <returns></returns>
         public Setting GetSettings()
         {
             return settings;

@@ -3,6 +3,9 @@ using System;
 
 namespace Filestransformer.Settings
 {
+    /// <summary>
+    /// Setting provider as provided from console
+    /// </summary>
     public class ConsoleSettingsProvider : ISettingsProvider
     {
         private readonly Setting settings;
@@ -22,6 +25,10 @@ namespace Filestransformer.Settings
                 inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes, fileEncoding);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <returns></returns>
         public Setting GetSettings()
         {
             return settings;

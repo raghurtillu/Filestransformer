@@ -7,6 +7,9 @@ namespace Filestransformer.StateMachines.FileTransformers
         Lowercase = 0,
     }
 
+    /// <summary>
+    /// Factory to get FileTranformation machine type <seealso cref="FileTransformerType"/>
+    /// </summary>
     public static class FileTransformerFactory
     {   
         public static Type GetFileTransformerType(FileTransformerType transformerType)

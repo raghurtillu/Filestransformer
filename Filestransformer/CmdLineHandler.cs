@@ -8,8 +8,16 @@ using System.Linq;
 
 namespace Filestransformer
 {
+    /// <summary>
+    /// processes command line arguments and invokes FileTransformation workflow
+    /// </summary>
     public class CmdLineHandler
     {
+        /// <summary>
+        /// Gets FileTransformation workflow actor <seealso cref="IActor"/>
+        /// </summary>
+        /// <param name="op"></param>
+        /// <returns></returns>
         public static IActor GetActor(Options op)
         {
             // merge console and default settings

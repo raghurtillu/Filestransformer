@@ -2,18 +2,39 @@
 
 namespace Filestransformer.Settings
 {    
+    /// <summary>
+    /// Control settings for FileTransformer
+    /// </summary>
     public class Setting
     {
+        /// <summary>
+        /// Number of file groups, e.g. for file group1.work1.txt, group1 is a group
+        /// </summary>
         public int FileGroups { get; private set; }
 
+        /// <summary>
+        /// Number of files to transform from a group simultaneously
+        /// </summary>
         public int MaxParallelFileTransformations { get; private set; }
 
+        /// <summary>
+        /// Input directory for files to transform
+        /// </summary>
         public string InputDirectoryPath { get; private set; }
 
+        /// <summary>
+        /// Output directory where the transformed files will reside
+        /// </summary>
         public string OutputDirectoryPath { get; private set; }
 
+        /// <summary>
+        /// Number of bytes to read from transformation file at a time
+        /// </summary>
         public int FileChunkSizeToReadInBytes { get; private set; }
 
+        /// <summary>
+        /// Encoding type of transformed file <seealso cref="FileEncoding"/>
+        /// </summary>
         public FileEncoding FileEncoding { get; private set; }
 
         public Setting(int fileGroups, int maxParallelFileTransformations, 

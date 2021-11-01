@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace Filestransformer.StateMachines.FileSystemWatcher
 {
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public class FileSystemWatcher : FileSystemWatcherBase
     {
         private ILogger logger;
@@ -15,6 +18,9 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
         private System.IO.FileSystemWatcher watcher;
         private MachineId fileGroupManager;
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void InitializeFileSystemWatcher()
         {
             var config = ReceivedEvent as eFileSystemWatcherConfig;
@@ -25,9 +31,12 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
             logger.WriteLine($"Initialized {nameof(FileSystemWatcher)} machine to watch directory \"{directoryToWatch}\" ");
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void Run()
         {
-            // get existing files in the directory if any
+            // get existing text files in the directory if any
             var existingFiles = Directory.GetFiles(inputDirectory, "*.txt").ToList();
             if (existingFiles?.Count > 0)
             {
@@ -57,6 +66,11 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
             watcher.Created += OnCreated;
         }
 
+        /// <summary>
+        /// Event handler when a new file is created
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
             this.Send(fileGroupManager, new eAddFileToTransform(e.Name));

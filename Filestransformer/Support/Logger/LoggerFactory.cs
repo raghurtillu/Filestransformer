@@ -29,7 +29,7 @@ namespace Filestransformer.Support.Logger
             }
             else
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("Only supporting console logger currently.");
             }
         }
     }

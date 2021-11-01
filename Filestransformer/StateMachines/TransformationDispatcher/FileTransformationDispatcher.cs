@@ -11,6 +11,9 @@ using System.Collections.Generic;
 
 namespace Filestransformer.StateMachines.TransformationDispatcher
 {
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public class FileTransformationDispatcher : FileTransformationDispatcherBase
     {
         // configuration related
@@ -30,6 +33,9 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
 
         private TimeSpan TIMER_RETRY_INTERVAL = TimeSpan.FromSeconds(10);
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void InitializeFileTransformationDispatcher()
         {
             var config = ReceivedEvent as eFileTransformationDispatcherConfig;
@@ -47,6 +53,9 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             logger.WriteLine($"Initialized {nameof(FileTransformationDispatcher)} machine for {group} successfully.");
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void HandleAddFileToTransform()
         {
             var transformRequest = ReceivedEvent as eAddFileToTransform;
@@ -54,6 +63,9 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             pendingTransformations.Enqueue(transformRequest.FullyQualifiedFileName);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void DispatchPendingFileTransformationJobRequests()
         {
             int maxIntake = maximumParallelFileTransformations - activeTransformations.Count;
@@ -81,6 +93,9 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             DisplayCurrentState();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void HandleFileTransformationResponse()
         {
             var response = ReceivedEvent as eFileTranformationResponseEvent;
@@ -118,10 +133,19 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             DisplayCurrentState();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override bool IsRunningAtFullCapacity() => !(activeTransformations.Count < maximumParallelFileTransformations);
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override bool HasPendingJobs() => pendingTransformations?.Count > 0;
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void DisplayIdleStateMessage(bool timerExpired)
         {
             if (timerExpired)
@@ -135,6 +159,9 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             DisplayCurrentState();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void SetRetryTimer()
         {
             this.StartPeriodicTimer(TIMER_RETRY_INTERVAL, TIMER_RETRY_INTERVAL);

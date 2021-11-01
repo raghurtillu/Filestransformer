@@ -2,6 +2,9 @@
 
 namespace Filestransformer.Support.CommandLine
 {
+    /// <summary>
+    /// Command line argument options
+    /// </summary>
     public class Options
     {
         [Option('h', Required = false, HelpText = "Default help")]

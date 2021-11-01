@@ -1,13 +1,13 @@
-﻿using Filestransformer.Settings;
-using Filestransformer.StateMachines.FileTransformers.Events;
+﻿using Filestransformer.StateMachines.FileTransformers.Events;
 using Filestransformer.Support.Utils;
 using Microsoft.PSharp;
 using System;
-using System.IO;
-using System.Text;
 
 namespace Filestransformer.StateMachines.FileTransformers
 {
+    /// <summary>
+    /// Machine transforms a file chunk to lower case
+    /// </summary>
     public partial class LowercaseFileChunkTransformer : Machine
     {
         public void HandleFileTransformChunkRequest()

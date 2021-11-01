@@ -11,6 +11,9 @@ using System.Collections.Generic;
 
 namespace Filestransformer.StateMachines.FileGroupManager
 {
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public class FileGroupManager : FileGroupManagerBase
     {
         // configuration related
@@ -43,13 +46,19 @@ namespace Filestransformer.StateMachines.FileGroupManager
             logger.WriteLine($"Initialized {nameof(FileGroupManager)} machine successfully.");
         }
 
+        /// <summary>
+        /// Dispatches transformation file request to <seealso cref="TransformationDispatcher"/>
+        /// </summary>
         protected override void DispatchPendingFileTransformationJobRequests()
         {
-            // TODO cap this to max limit, for now drain the list
+            // TODO: Have a cap around global maximum number of pending + active requests in the system; for now drain the pending requests list
+            //
             while (pendingTranformations.Count > 0)
             {
                 string groupName, unqualifiedFileName;
 
+                // TODO: for v2 can have a Policy enforcement around pending requests e.g. Priority, Shortest time to transform etc; for now simply do a FIFO
+                //
                 var fileName = pendingTranformations.Peek();
                 FullyQualifiedNameClient.GetGroupAndFileNameFromFullyQualifiedFileName(fileName,
                         out groupName, out unqualifiedFileName);
@@ -80,6 +89,9 @@ namespace Filestransformer.StateMachines.FileGroupManager
 
         #region AddingFiles to transform
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void HandleAddFilesToTransform()
         {
             var addFilesEvent = ReceivedEvent as eAddFilesToTransform;
@@ -89,6 +101,9 @@ namespace Filestransformer.StateMachines.FileGroupManager
             }
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void HandleAddFileToTransform()
         {
             var addFileEvent = ReceivedEvent as eAddFileToTransform;
@@ -97,7 +112,6 @@ namespace Filestransformer.StateMachines.FileGroupManager
 
         private void HandleAddFileToTransform(string fullyQualifiedFileName)
         {
-            //logger.WriteLine($"Adding file to dispatcher {fullyQualifiedFileName}");
             pendingTranformations.Enqueue(fullyQualifiedFileName);
         }
 

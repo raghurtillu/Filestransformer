@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.PSharp;
+﻿using Microsoft.PSharp;
 
 namespace Filestransformer.StateMachines.FileSystemWatcher
 {
+    /// <summary>
+    /// Machine for monitor for new files in input directory <seealso cref="Setting.InputDirectoryPath"/>
+    /// </summary>
     public abstract partial class FileSystemWatcherBase : Machine
     {
+        /// <summary>
+        /// Initializes machine
+        /// </summary>
         protected abstract void InitializeFileSystemWatcher();
 
         protected abstract void Run();

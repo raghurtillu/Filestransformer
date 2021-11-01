@@ -5,11 +5,17 @@ using System.Threading;
 
 namespace Filestransformer.StateMachines.FileTransformers
 {
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public class LowercaseFileTransformer : FileTransformer
     {
         private FileStream inputFileStream;
         private FileStream outputFileStream;
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void InitializeFileTransformer()
         {
             base.InitializeFileTransformer();
@@ -64,12 +70,18 @@ namespace Filestransformer.StateMachines.FileTransformers
             status = FileTransformationStatus.InProgress;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void SendFileTransformationRequest()
         {
             var machine = this.CreateMachine(typeof(LowercaseFileChunkTransformer));
             this.Send(machine, new eFileChunkTransformRequestEvent(this.Id, inputFileStream, fileChunkSizeToReadInBytes, fileEncoding));
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void HandleFileChunkResponse()
         {
             var response = ReceivedEvent as eFileChunkTransformResponseEvent;
@@ -91,15 +103,22 @@ namespace Filestransformer.StateMachines.FileTransformers
             }
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public override void HandleFileTransformationRequestCompleted()
         {
             SendFileTranformationResponse(status, fileName, failureReason);
             DisposeFileStreams();
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override bool CompletedReadingInputFile() => 
             inputFileStream?.Position >= inputFileStream?.Length;
             
+
         private void DisposeFileStreams()
         {
             inputFileStream?.Close();

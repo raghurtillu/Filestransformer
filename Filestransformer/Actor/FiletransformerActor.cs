@@ -10,6 +10,10 @@ using System.Threading;
 
 namespace Filestransformer.Actor
 {
+    /// <summary>
+    /// FileTransformerActor
+    /// Orchestrator for the transformation workflow
+    /// </summary>
     public class FiletransformerActor : IActor
     {
         private readonly Setting settings;

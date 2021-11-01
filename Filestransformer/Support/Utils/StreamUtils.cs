@@ -1,15 +1,22 @@
 ﻿using Filestransformer.Settings;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Filestransformer.Support.Utils
 {
+    /// <summary>
+    /// Stream utilities around reading chunks of read stream, conversting to string, bytes etc
+    /// </summary>
     public static class StreamUtils
     {
+        /// <summary>
+        /// Reads chunksize size content from stream as a string
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="chunkSize"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         public static string GetFileChunkAsString(Stream stream, int chunkSize, FileEncoding encoding)
         {
             if (stream == null || chunkSize <= 0 || encoding == FileEncoding.Unknown)
