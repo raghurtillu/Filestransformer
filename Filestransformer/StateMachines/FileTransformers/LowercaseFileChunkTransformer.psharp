@@ -1,0 +1,29 @@
+﻿using System;
+using Filestransformer.StateMachines.FileTransformers.Events;
+
+namespace Filestransformer.StateMachines.FileTransformers
+{
+    partial machine LowercaseFileChunkTransformer : Machine
+    {
+        start state Init
+		{
+			entry
+			{
+                jump(Active);
+			}
+            defer *;
+        }
+
+        state Active
+        {
+            on eFileChunkTransformRequestEvent do 
+            {
+                HandleFileTransformChunkRequest();
+            }
+            on eFileChunkTransformCompletionEvent do
+            {
+                raise(halt);
+            }
+        }
+    }
+}

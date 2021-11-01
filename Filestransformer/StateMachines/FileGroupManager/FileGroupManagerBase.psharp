@@ -1,0 +1,46 @@
+﻿using System;
+using Filestransformer.StateMachines.FileGroupManager.Events;
+using Filestransformer.StateMachines.CommonEvents;
+
+namespace Filestransformer.StateMachines.FileGroupManager
+{
+    partial machine FileGroupManagerBase : Machine
+    {
+        start state Init
+		{
+			on eFileGroupManagerConfig do
+            {
+                InitializeFileGroupManager();
+                jump(Active);
+            }
+        }
+        
+        state Active
+        {
+            on eAddFileToTransform do 
+            {
+                HandleAddFileToTransform();
+                jump(Dispatching);
+            }
+
+            on eAddFilesToTransform do
+            {
+                HandleAddFilesToTransform();
+                jump(Dispatching);
+            }
+
+            defer *;
+        }
+
+        state Dispatching
+        {
+            entry
+            {
+                DispatchPendingFileTransformationJobRequests();
+                jump(Active);
+            }
+
+            defer *;
+        }
+    }
+}

@@ -1,0 +1,122 @@
+﻿using System;
+using Filestransformer.StateMachines.TransformationDispatcher.Events;
+using Filestransformer.StateMachines.FileTransformers.Events;
+using Filestransformer.StateMachines.CommonEvents;
+using Microsoft.PSharp.Timers;
+
+namespace Filestransformer.StateMachines.TransformationDispatcher
+{
+    partial machine FileTransformationDispatcherBase : Machine
+    {
+        start state Init
+		{
+			on eFileTransformationDispatcherConfig do
+            {
+                InitializeFileTransformationDispatcher();
+                jump(Active);
+            }
+            defer *;
+        }
+
+        state Active
+        {
+            entry
+            {
+                if (HasPendingJobs())
+                {
+                    if (IsRunningAtFullCapacity())
+                    {
+                        // if the orchestrator is running at full capacity, then transition to Idle state
+                        jump(Idle);
+                    }
+                    else
+                    {
+                        jump(Dispatching);
+                    }
+                }
+            }
+
+            on eAddFileToTransform do
+            {
+                HandleAddFileToTransform();
+                if (IsRunningAtFullCapacity())
+                {
+                    jump(Idle);
+                }
+                else
+                {
+                    jump(Dispatching);
+                }
+            }
+            
+            on eFileTranformationResponseEvent do 
+            {
+                HandleFileTransformationResponse();
+            }
+            
+            defer *;
+        }
+
+        state Dispatching
+        {
+            entry
+            {
+                DispatchPendingFileTransformationJobRequests();
+                jump(Active);
+            }
+
+            on eFileTranformationResponseEvent do 
+            {
+                HandleFileTransformationResponse();
+            }
+
+            defer *;
+        }
+
+        // Being in this state means that we are running at max capacity
+        state Idle
+        {
+            entry
+            {
+                DisplayIdleStateMessage(false);
+                SetRetryTimer();
+            }
+
+            on TimerElapsedEvent do
+            {
+                DisplayIdleStateMessage(true);
+                if (HasPendingJobs())
+                {
+                    if (IsRunningAtFullCapacity())
+                    {
+                        jump(Idle);
+                    }
+                    else
+                    {
+                        jump(Dispatching);
+                    }
+                }
+                else
+                {
+                    // no pending jobs, yay!
+                    jump(Active);
+                }
+            }
+
+            on eFileTranformationResponseEvent do 
+            {
+                HandleFileTransformationResponse();
+                if (IsRunningAtFullCapacity())
+                {
+                    jump(Idle);
+                }
+                else
+                {
+                    jump(Dispatching);
+                }
+            }
+
+            defer *;
+        }
+    }
+}

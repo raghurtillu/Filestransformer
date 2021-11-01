@@ -1,0 +1,26 @@
+﻿using System;
+using Filestransformer.StateMachines.FileSystemWatcher.Events;
+
+namespace Filestransformer.StateMachines.FileSystemWatcher
+{   
+    partial machine FileSystemWatcherBase : Machine
+    {
+        start state Init
+		{
+			on eFileSystemWatcherConfig do
+            {
+                InitializeFileSystemWatcher();
+                jump(Active);
+            }
+        }
+        
+        state Active
+        {
+            entry
+            {
+                Run();
+            }
+            defer *;
+        }
+    }
+}
