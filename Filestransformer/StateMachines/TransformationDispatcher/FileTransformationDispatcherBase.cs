@@ -28,7 +28,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         protected abstract void HandleFileTransformationResponse();
 
         /// <summary>
-        /// Determines if the orchestrator is running at fully capacity as specified in <seealso cref="Setting.MaxParallelFileTransformations"/>
+        /// Determines if the orchestrator is running at full capacity as specified in <seealso cref="Setting.MaxParallelFileTransformations"/>
         /// </summary>
         /// <returns></returns>
         protected abstract bool IsRunningAtFullCapacity();

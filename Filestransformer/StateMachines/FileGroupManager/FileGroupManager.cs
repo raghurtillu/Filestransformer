@@ -18,7 +18,6 @@ namespace Filestransformer.StateMachines.FileGroupManager
     {
         // configuration related
         private ILogger logger;
-        private int fileGroups;
         private int maximumParallelFileTransformations;
         private string inputDirectory;
         private string outputDirectory;
@@ -33,7 +32,6 @@ namespace Filestransformer.StateMachines.FileGroupManager
         {
             var config = ReceivedEvent as eFileGroupManagerConfig;
             logger = config.Logger;
-            fileGroups = config.FileGroups;
             maximumParallelFileTransformations = config.MaximumParallelFileTransformations;
             inputDirectory = config.InputDirectory;
             outputDirectory = config.OutputDirectory;

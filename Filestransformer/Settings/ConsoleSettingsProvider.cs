@@ -12,7 +12,6 @@ namespace Filestransformer.Settings
 
         public ConsoleSettingsProvider(Options op)
         {
-            int fileGroups = op?.FileGroups ?? 0;
             int maximumParallelFileTransformations = op?.MaximumParallelFileTransformations ?? 0;
             string inputDirectoryPath = op?.InputDirectoryPath ?? "";
             string outputDirectoryPath = op?.OutputDirectoryPath ?? "";
@@ -21,8 +20,8 @@ namespace Filestransformer.Settings
             FileEncoding fileEncoding;
             Enum.TryParse(op?.FileEncoding ?? "unknown", true, out fileEncoding);
 
-            settings = new Setting(fileGroups, maximumParallelFileTransformations, 
-                inputDirectoryPath, outputDirectoryPath, fileChunkSizeToReadInBytes, fileEncoding);
+            settings = new Setting(maximumParallelFileTransformations, inputDirectoryPath, outputDirectoryPath, 
+                fileChunkSizeToReadInBytes, fileEncoding);
         }
 
         /// <summary>

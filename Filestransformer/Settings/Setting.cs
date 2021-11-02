@@ -8,11 +8,6 @@ namespace Filestransformer.Settings
     public class Setting
     {
         /// <summary>
-        /// Number of file groups, e.g. for file group1.work1.txt, group1 is a group
-        /// </summary>
-        public int FileGroups { get; private set; }
-
-        /// <summary>
         /// Number of files to transform from a group simultaneously
         /// </summary>
         public int MaxParallelFileTransformations { get; private set; }
@@ -37,10 +32,9 @@ namespace Filestransformer.Settings
         /// </summary>
         public FileEncoding FileEncoding { get; private set; }
 
-        public Setting(int fileGroups, int maxParallelFileTransformations, 
-            string inputDirectoryPath, string outputDirectoryPath, int fileChunkSizeToReadInBytes, FileEncoding fileEncoding)
+        public Setting(int maxParallelFileTransformations, string inputDirectoryPath, string outputDirectoryPath, 
+            int fileChunkSizeToReadInBytes, FileEncoding fileEncoding)
         {
-            this.FileGroups = fileGroups;
             this.MaxParallelFileTransformations = maxParallelFileTransformations;
             this.InputDirectoryPath = inputDirectoryPath;
             this.OutputDirectoryPath = outputDirectoryPath;
@@ -53,12 +47,7 @@ namespace Filestransformer.Settings
         /// </summary>
         /// <param name="otherSettings"></param>
         public Setting MergeFrom(Setting otherSettings)
-        {
-            if (otherSettings.FileGroups != 0)
-            {
-                this.FileGroups = otherSettings.FileGroups;
-            }
-            
+        {           
             if (otherSettings.MaxParallelFileTransformations != 0)
             {
                 this.MaxParallelFileTransformations = otherSettings.MaxParallelFileTransformations;
@@ -86,7 +75,6 @@ namespace Filestransformer.Settings
                 this.FileEncoding = otherSettings.FileEncoding;
             }
 
-            if (this.FileGroups <= 0) { throw new ArgumentException($"Invalid value '{this.FileGroups}' specified."); }
             if (this.MaxParallelFileTransformations <= 0) { throw new ArgumentException($"Invalid value '{this.MaxParallelFileTransformations}' specified."); }
             if (string.IsNullOrWhiteSpace(this.InputDirectoryPath)) { throw new ArgumentException($"Invalid value '{this.InputDirectoryPath}' specified."); }
             if (string.IsNullOrWhiteSpace(this.OutputDirectoryPath)) { throw new ArgumentException($"Invalid value '{this.OutputDirectoryPath}' specified."); }

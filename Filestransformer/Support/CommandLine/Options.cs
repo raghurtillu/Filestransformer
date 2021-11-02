@@ -10,10 +10,6 @@ namespace Filestransformer.Support.CommandLine
         [Option('h', Required = false, HelpText = "Default help")]
         public string Help { get; set; } = "This is default help";
 
-        [Option('n', Required = false, HelpText = "Each file belongs one group, " +
-            "each group can have arbitrary number of files associated with it, e.g. 3")]
-        public int FileGroups { get; set; }
-
         [Option('p', Required = false, HelpText = "Maximum number of file transformations allowed in an epoch, e.g. 3")]
         public int MaximumParallelFileTransformations { get; set; }
 

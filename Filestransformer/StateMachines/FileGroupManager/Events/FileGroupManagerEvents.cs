@@ -7,7 +7,6 @@ namespace Filestransformer.StateMachines.FileGroupManager.Events
     public class eFileGroupManagerConfig : Event
     {
         public ILogger Logger { get; }
-        public int FileGroups { get; }
         public int MaximumParallelFileTransformations { get; }
         public string InputDirectory { get; }
         public string OutputDirectory { get; }
@@ -16,11 +15,10 @@ namespace Filestransformer.StateMachines.FileGroupManager.Events
 
         // TODO add a setting for MaxOverallFileTransformations in the system
 
-        public eFileGroupManagerConfig(ILogger logger, int filegroups, int maximumParallelFileTransformations, 
+        public eFileGroupManagerConfig(ILogger logger, int maximumParallelFileTransformations, 
             string inputDirectory, string outputDirectory, int fileChunkSizeToReadInBytes, FileEncoding fileEncoding)
         {
             this.Logger = logger;
-            this.FileGroups = filegroups;
             this.MaximumParallelFileTransformations = maximumParallelFileTransformations;
             this.InputDirectory = inputDirectory;
             this.OutputDirectory = outputDirectory;

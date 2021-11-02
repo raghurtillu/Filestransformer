@@ -12,7 +12,7 @@ namespace Filestransformer.Actor
 {
     /// <summary>
     /// FileTransformerActor
-    /// Orchestrator for the transformation workflow
+    /// Orchestrator for file transformation workflow
     /// </summary>
     public class FiletransformerActor : IActor
     {
@@ -46,7 +46,6 @@ namespace Filestransformer.Actor
 
             logger.WriteLine("");
             logger.WriteLine("Running file transformer with the following settings: ");
-            logger.WriteLine($"FileGroups: {settings.FileGroups}");
             logger.WriteLine($"MaximumParallelFileTransformations: {settings.MaxParallelFileTransformations}");
             logger.WriteLine($"InputDirectoryPath: {settings.InputDirectoryPath}");
             logger.WriteLine($"OutputDirectoryPath: {settings.OutputDirectoryPath}");
@@ -62,8 +61,8 @@ namespace Filestransformer.Actor
                 fileGroupManager));
 
             // initialize filegroupmanager machine
-            psharpRuntime.SendEvent(fileGroupManager, new eFileGroupManagerConfig(logger, settings.FileGroups, 
-                settings.MaxParallelFileTransformations, settings.InputDirectoryPath, settings.OutputDirectoryPath,
+            psharpRuntime.SendEvent(fileGroupManager, new eFileGroupManagerConfig(logger, settings.MaxParallelFileTransformations, 
+                settings.InputDirectoryPath, settings.OutputDirectoryPath,
                 settings.FileChunkSizeToReadInBytes, settings.FileEncoding));
 
             // block forever
@@ -83,6 +82,7 @@ namespace Filestransformer.Actor
             {
                 logger.WriteLine("");
                 logger.WriteLine($"An error occurred while creating directory {path}: {ex.ToString()}");
+                throw;
             }
         }
     }
