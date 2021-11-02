@@ -6,8 +6,8 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
     partial machine FileSystemWatcherBase : Machine
     {
         start state Init
-		{
-			on eFileSystemWatcherConfig do
+        {
+            on eFileSystemWatcherConfig do
             {
                 InitializeFileSystemWatcher();
                 jump(Active);

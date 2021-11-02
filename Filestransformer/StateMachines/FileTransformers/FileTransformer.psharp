@@ -3,41 +3,41 @@ using Filestransformer.StateMachines.FileTransformers.Events;
 
 namespace Filestransformer.StateMachines.FileTransformers
 {
-    partial machine FileTransformer : Machine
-    {
-        start state Init
+	partial machine FileTransformer : Machine
+	{
+		start state Init
 		{
 			on eFileTransformerEvent do
-            {
-                InitializeFileTransformer();
-                jump(Active);
-            }
-        }
+			{
+				InitializeFileTransformer();
+				jump(Active);
+			}
+		}
 
-        state Active
-        {
-            entry
-            {
-                if (CompletedReadingInputFile())
-                {
-                    // if file transformation is completed, send a completion event to self
-                    this.Send(Id, new eFileTranformationCompletionEvent());
-                }
-                else
-                {
-                    SendFileTransformationRequest();
-                }
-            }
-            on eFileChunkTransformResponseEvent do
-            {
-                HandleFileChunkResponse();
-                jump(Active);
-            }
-            on eFileTranformationCompletionEvent do
-            {
-                HandleFileTransformationRequestCompleted();
-                raise(halt);
-            }
-        }
-    }
+		state Active
+		{
+			entry
+			{
+				if (CompletedReadingInputFile())
+				{
+					// if file transformation is completed, send a completion event to self
+					this.Send(Id, new eFileTranformationCompletionEvent());
+				}
+				else
+				{
+					SendFileTransformationRequest();
+				}
+			}
+			on eFileChunkTransformResponseEvent do
+			{
+				HandleFileChunkResponse();
+				jump(Active);
+			}
+			on eFileTranformationCompletionEvent do
+			{
+				HandleFileTransformationRequestCompleted();
+				raise(halt);
+			}
+		}
+	}
 }

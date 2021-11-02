@@ -7,8 +7,8 @@ namespace Filestransformer.StateMachines.FileGroupManager
     partial machine FileGroupManagerBase : Machine
     {
         start state Init
-		{
-			on eFileGroupManagerConfig do
+        {
+            on eFileGroupManagerConfig do
             {
                 InitializeFileGroupManager();
                 jump(Active);

@@ -3,27 +3,27 @@ using Filestransformer.StateMachines.FileTransformers.Events;
 
 namespace Filestransformer.StateMachines.FileTransformers
 {
-    partial machine LowercaseFileChunkTransformer : Machine
-    {
-        start state Init
+	partial machine LowercaseFileChunkTransformer : Machine
+	{
+		start state Init
 		{
 			entry
 			{
-                jump(Active);
+				jump(Active);
 			}
-            defer *;
-        }
+			defer *;
+		}
 
-        state Active
-        {
-            on eFileChunkTransformRequestEvent do 
-            {
-                HandleFileTransformChunkRequest();
-            }
-            on eFileChunkTransformCompletionEvent do
-            {
-                raise(halt);
-            }
-        }
-    }
+		state Active
+		{
+			on eFileChunkTransformRequestEvent do 
+			{
+				HandleFileTransformChunkRequest();
+			}
+			on eFileChunkTransformCompletionEvent do
+			{
+				raise(halt);
+			}
+		}
+	}
 }

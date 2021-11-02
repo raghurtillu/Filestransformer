@@ -9,8 +9,8 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
     partial machine FileTransformationDispatcherBase : Machine
     {
         start state Init
-		{
-			on eFileTransformationDispatcherConfig do
+        {
+            on eFileTransformationDispatcherConfig do
             {
                 InitializeFileTransformationDispatcher();
                 jump(Active);
@@ -46,16 +46,16 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 else
                 {
                     jump(Dispatching);
-                }
             }
-            
-            on eFileTranformationResponseEvent do 
-            {
-                HandleFileTransformationResponse();
-            }
-            
-            defer *;
         }
+            
+        on eFileTranformationResponseEvent do 
+        {
+            HandleFileTransformationResponse();
+        }
+            
+        defer *;
+    } // end of active state
 
         state Dispatching
         {
@@ -117,6 +117,6 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             }
 
             defer *;
-        }
+        } // end of idle state
     }
 }
