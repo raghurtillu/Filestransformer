@@ -39,6 +39,10 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         /// <returns></returns>
         protected abstract bool HasPendingJobs();
 
+        /// <summary>
+        /// TODO, don't really like this method in base class, revisit
+        /// </summary>
+        /// <param name="timerExpired"></param>
         protected abstract void DisplayIdleStateMessage(bool timerExpired);
 
         protected abstract void SetRetryTimer();

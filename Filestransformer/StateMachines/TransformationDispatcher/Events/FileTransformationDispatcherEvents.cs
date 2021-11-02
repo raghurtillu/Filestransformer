@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Filestransformer.Settings;
+﻿using Filestransformer.Settings;
 using Filestransformer.Support.Logger;
 using Microsoft.PSharp;
 
@@ -13,7 +8,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher.Events
     {
         public ILogger Logger { get; }
         public string Group { get; }
-        public int MaximumParallelFileTransformations { get; }
+        public int MaximumParallelFileTransformationsPerGroup { get; }
         public string InputDirectory { get; }
         public string OutputDirectory { get; }
         public int FileChunkSizeToReadInBytes { get; }
@@ -24,7 +19,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher.Events
         {
             this.Logger = logger;
             this.Group = group;
-            this.MaximumParallelFileTransformations = maximumParallelFileTransformations;
+            this.MaximumParallelFileTransformationsPerGroup = maximumParallelFileTransformations;
             this.InputDirectory = inputDirectory;
             this.OutputDirectory = outputDirectory;
             this.FileChunkSizeToReadInBytes = fileChunkSizeToReadInBytes;

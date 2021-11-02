@@ -19,7 +19,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         // configuration related
         private ILogger logger;
         private string group;
-        private int maximumParallelFileTransformations;
+        private int maximumParallelFileTransformationsPerGroup;
         private string inputDirectory;
         private string outputDirectory;
         private int fileChunkSizeToReadInBytes;
@@ -41,7 +41,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             var config = ReceivedEvent as eFileTransformationDispatcherConfig;
             logger = config.Logger;
             group = config.Group;
-            maximumParallelFileTransformations = config.MaximumParallelFileTransformations;
+            maximumParallelFileTransformationsPerGroup = config.MaximumParallelFileTransformationsPerGroup;
             inputDirectory = config.InputDirectory;
             outputDirectory = config.OutputDirectory;
             fileChunkSizeToReadInBytes = config.FileChunkSizeToReadInBytes;
@@ -49,8 +49,6 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
 
             pendingTransformations = new Queue<string>();
             activeTransformations = new Dictionary<string, MachineId>(StringComparer.OrdinalIgnoreCase);
-
-            logger.WriteLine($"Initialized {nameof(FileTransformationDispatcher)} machine for {group} successfully.");
         }
 
         /// <summary>
@@ -68,7 +66,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         /// </summary>
         protected override void DispatchPendingFileTransformationJobRequests()
         {
-            int maxIntake = maximumParallelFileTransformations - activeTransformations.Count;
+            int maxIntake = maximumParallelFileTransformationsPerGroup - activeTransformations.Count;
             maxIntake = Math.Min(maxIntake, pendingTransformations.Count);
 
             logger.WriteLine($"{group} dispatcher will process {maxIntake} request in this epoch");
@@ -86,7 +84,6 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                     this.Send(activeTransformations[fileName], configEvent);
                 }
 
-                //logger.WriteLine($"Processed {fullyQualifiedFileName} successfully.");
                 pendingTransformations.Dequeue();
             }
 
@@ -136,12 +133,14 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        protected override bool IsRunningAtFullCapacity() => !(activeTransformations.Count < maximumParallelFileTransformations);
+        protected override bool IsRunningAtFullCapacity() => 
+            !(activeTransformations.Count < maximumParallelFileTransformationsPerGroup);
 
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        protected override bool HasPendingJobs() => pendingTransformations?.Count > 0;
+        protected override bool HasPendingJobs() 
+            => pendingTransformations?.Count > 0;
 
         /// <summary>
         /// <inheritdoc/>
@@ -164,6 +163,10 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         /// </summary>
         protected override void SetRetryTimer()
         {
+            // Note that is the amount of time this machine will wait before a retry
+            // If we get a transformation complete response from downstream transformation machine before the retry period ends and
+            // we are running < full capacity, we will pick up processsing pending transformations immediately
+            //
             this.StartPeriodicTimer(TIMER_RETRY_INTERVAL, TIMER_RETRY_INTERVAL);
         }
 
@@ -175,8 +178,9 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
             return fileName;
         }
 
-        private void DisplayCurrentState() => logger.WriteLine($"Group {group} status: " +
-                $"(Active: {activeTransformations.Count}, Pending: {pendingTransformations.Count}, MaxLimit: {maximumParallelFileTransformations}, " +
+        private void DisplayCurrentState() => 
+            logger.WriteLine($"Group {group} status: " +
+                $"(Active: {activeTransformations.Count}, Pending: {pendingTransformations.Count}, MaxLimit: {maximumParallelFileTransformationsPerGroup}, " +
                 $"Total completed: {totalSuccessful + totalFailed}, Total successful: {totalSuccessful}, Total failed: {totalFailed})", LogLevelContext.Warning);
 
         private MachineId CreateFileTransformerMachine() =>

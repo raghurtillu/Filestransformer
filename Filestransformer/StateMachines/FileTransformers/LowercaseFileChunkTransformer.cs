@@ -18,15 +18,15 @@ namespace Filestransformer.StateMachines.FileTransformers
             try
             {
                 string str = StreamUtils.GetFileChunkAsString(request.FileStream, request.FileChunkSizeToReadInBytes, request.FileEncoding);
-                if (string.IsNullOrWhiteSpace(str))
-                {
-                    // file read completely
-                    this.Send(request.Sender, new eFileChunkTransformResponseEvent(FileTransformationStatus.Success, null, failureReason));
-                }
-                else
+                if (!string.IsNullOrWhiteSpace(str))
                 {
                     var transformedBytes = StreamUtils.GetBytesFromString(str.ToLower(), request.FileEncoding);
                     this.Send(request.Sender, new eFileChunkTransformResponseEvent(FileTransformationStatus.Success, transformedBytes, failureReason));
+                }
+                else
+                {
+                    // file read completely
+                    this.Send(request.Sender, new eFileChunkTransformResponseEvent(FileTransformationStatus.Success, null, failureReason));
                 }
             }
             catch (Exception ex)

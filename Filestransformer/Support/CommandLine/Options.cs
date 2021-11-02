@@ -10,8 +10,8 @@ namespace Filestransformer.Support.CommandLine
         [Option('h', Required = false, HelpText = "Default help")]
         public string Help { get; set; } = "This is default help";
 
-        [Option('p', Required = false, HelpText = "Maximum number of file transformations allowed in an epoch, e.g. 3")]
-        public int MaximumParallelFileTransformations { get; set; }
+        [Option('p', Required = false, HelpText = "Maximum number of file transformations allowed per group in an epoch, e.g. 3")]
+        public int MaximumParallelFileTransformationsPerGroup { get; set; }
 
         [Option('i', Required = false, HelpText = "Directory containing files to transform, e.g. c:\\users\\rags\\input")]
         public string InputDirectoryPath { get; set; }

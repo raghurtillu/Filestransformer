@@ -10,7 +10,7 @@ namespace Filestransformer.Settings
         /// <summary>
         /// Number of files to transform from a group simultaneously
         /// </summary>
-        public int MaxParallelFileTransformations { get; private set; }
+        public int MaxParallelFileTransformationsPerGroup { get; private set; }
 
         /// <summary>
         /// Input directory for files to transform
@@ -32,10 +32,10 @@ namespace Filestransformer.Settings
         /// </summary>
         public FileEncoding FileEncoding { get; private set; }
 
-        public Setting(int maxParallelFileTransformations, string inputDirectoryPath, string outputDirectoryPath, 
+        public Setting(int maxParallelFileTransformationsPerGroup, string inputDirectoryPath, string outputDirectoryPath, 
             int fileChunkSizeToReadInBytes, FileEncoding fileEncoding)
         {
-            this.MaxParallelFileTransformations = maxParallelFileTransformations;
+            this.MaxParallelFileTransformationsPerGroup = maxParallelFileTransformationsPerGroup;
             this.InputDirectoryPath = inputDirectoryPath;
             this.OutputDirectoryPath = outputDirectoryPath;
             this.FileChunkSizeToReadInBytes = fileChunkSizeToReadInBytes;
@@ -48,9 +48,9 @@ namespace Filestransformer.Settings
         /// <param name="otherSettings"></param>
         public Setting MergeFrom(Setting otherSettings)
         {           
-            if (otherSettings.MaxParallelFileTransformations != 0)
+            if (otherSettings.MaxParallelFileTransformationsPerGroup != 0)
             {
-                this.MaxParallelFileTransformations = otherSettings.MaxParallelFileTransformations;
+                this.MaxParallelFileTransformationsPerGroup = otherSettings.MaxParallelFileTransformationsPerGroup;
             }
 
             if (!string.IsNullOrWhiteSpace(otherSettings.InputDirectoryPath))
@@ -75,7 +75,7 @@ namespace Filestransformer.Settings
                 this.FileEncoding = otherSettings.FileEncoding;
             }
 
-            if (this.MaxParallelFileTransformations <= 0) { throw new ArgumentException($"Invalid value '{this.MaxParallelFileTransformations}' specified."); }
+            if (this.MaxParallelFileTransformationsPerGroup <= 0) { throw new ArgumentException($"Invalid value '{this.MaxParallelFileTransformationsPerGroup}' specified."); }
             if (string.IsNullOrWhiteSpace(this.InputDirectoryPath)) { throw new ArgumentException($"Invalid value '{this.InputDirectoryPath}' specified."); }
             if (string.IsNullOrWhiteSpace(this.OutputDirectoryPath)) { throw new ArgumentException($"Invalid value '{this.OutputDirectoryPath}' specified."); }
             if (this.FileChunkSizeToReadInBytes <= 0) { throw new ArgumentException($"Invalid value '{this.FileChunkSizeToReadInBytes}' specified."); }

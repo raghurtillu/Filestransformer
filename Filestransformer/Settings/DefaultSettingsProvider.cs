@@ -12,7 +12,7 @@ namespace Filestransformer.Settings
 
         public DefaultSettingsProvider()
         {
-            int maximumParallelFileTransformations = Int32.Parse(ConfigurationManager.AppSettings["MaximumParallelFileTransformations"]);
+            int maximumParallelFileTransformationsPerGroup = Int32.Parse(ConfigurationManager.AppSettings["MaximumParallelFileTransformationsPerGroup"]);
             string inputDirectoryPath = ConfigurationManager.AppSettings["InputDirectoryPath"];
             string outputDirectoryPath = ConfigurationManager.AppSettings["OutputDirectoryPath"];
             int fileChunkSizeToReadInBytes = Int32.Parse(ConfigurationManager.AppSettings["FileChunkSizeToReadInBytes"]);
@@ -20,7 +20,7 @@ namespace Filestransformer.Settings
             FileEncoding fileEncoding;
             Enum.TryParse(ConfigurationManager.AppSettings["FileEncoding"], true, out fileEncoding);
 
-            settings = new Setting(maximumParallelFileTransformations, inputDirectoryPath, outputDirectoryPath, 
+            settings = new Setting(maximumParallelFileTransformationsPerGroup, inputDirectoryPath, outputDirectoryPath, 
                 fileChunkSizeToReadInBytes, fileEncoding);
         }
 

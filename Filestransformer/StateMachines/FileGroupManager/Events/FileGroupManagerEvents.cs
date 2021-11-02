@@ -7,7 +7,7 @@ namespace Filestransformer.StateMachines.FileGroupManager.Events
     public class eFileGroupManagerConfig : Event
     {
         public ILogger Logger { get; }
-        public int MaximumParallelFileTransformations { get; }
+        public int MaximumParallelFileTransformationsPerGroup { get; }
         public string InputDirectory { get; }
         public string OutputDirectory { get; }
         public int FileChunkSizeToReadInBytes { get; }
@@ -19,7 +19,7 @@ namespace Filestransformer.StateMachines.FileGroupManager.Events
             string inputDirectory, string outputDirectory, int fileChunkSizeToReadInBytes, FileEncoding fileEncoding)
         {
             this.Logger = logger;
-            this.MaximumParallelFileTransformations = maximumParallelFileTransformations;
+            this.MaximumParallelFileTransformationsPerGroup = maximumParallelFileTransformations;
             this.InputDirectory = inputDirectory;
             this.OutputDirectory = outputDirectory;
             this.FileChunkSizeToReadInBytes = fileChunkSizeToReadInBytes;

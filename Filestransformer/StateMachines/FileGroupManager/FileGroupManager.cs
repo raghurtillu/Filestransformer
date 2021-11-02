@@ -18,7 +18,7 @@ namespace Filestransformer.StateMachines.FileGroupManager
     {
         // configuration related
         private ILogger logger;
-        private int maximumParallelFileTransformations;
+        private int maximumParallelFileTransformationsPerGroup;
         private string inputDirectory;
         private string outputDirectory;
         private int fileChunkSizeToReadInBytes;
@@ -32,7 +32,7 @@ namespace Filestransformer.StateMachines.FileGroupManager
         {
             var config = ReceivedEvent as eFileGroupManagerConfig;
             logger = config.Logger;
-            maximumParallelFileTransformations = config.MaximumParallelFileTransformations;
+            maximumParallelFileTransformationsPerGroup = config.MaximumParallelFileTransformationsPerGroup;
             inputDirectory = config.InputDirectory;
             outputDirectory = config.OutputDirectory;
             fileChunkSizeToReadInBytes = config.FileChunkSizeToReadInBytes;
@@ -70,7 +70,7 @@ namespace Filestransformer.StateMachines.FileGroupManager
                     // create dispatcher machine if not exists
                     if (!activeTransformations.ContainsKey(groupName))
                     {
-                        var configEvent = new eFileTransformationDispatcherConfig(logger, groupName, maximumParallelFileTransformations,
+                        var configEvent = new eFileTransformationDispatcherConfig(logger, groupName, maximumParallelFileTransformationsPerGroup,
                             inputDirectory, outputDirectory, fileChunkSizeToReadInBytes, fileEncoding);
 
                         activeTransformations[groupName] = this.CreateMachine(typeof(FileTransformationDispatcher));

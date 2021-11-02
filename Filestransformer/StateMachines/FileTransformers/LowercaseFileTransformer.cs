@@ -36,12 +36,12 @@ namespace Filestransformer.StateMachines.FileTransformers
                 catch (Exception ex)
                 {
                     // todo: weird code for retry, hitting INPUT file stream being used by another process in win 11 :(, proc explorer doesnt show up anything
-                    // retrying after sometime seems to work
+                    // retrying after sometime seems to work, are we not disposing off the streams correctly???
                     lastException = ex;
                     status = FileTransformationStatus.Failed;
                     Thread.Sleep(1000);
                 }
-            } while (retryAttempt < 3);
+            } while (retryAttempt++ < 3);
 
             if (!init && retryAttempt >= 3)
             {
@@ -50,6 +50,7 @@ namespace Filestransformer.StateMachines.FileTransformers
 
                 // send completion status to self and proceed to halt this machine
                 this.Send(Id, new eFileTranformationCompletionEvent());
+                return;
             }
 
             //try

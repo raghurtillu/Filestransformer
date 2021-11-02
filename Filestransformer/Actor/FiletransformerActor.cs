@@ -46,7 +46,7 @@ namespace Filestransformer.Actor
 
             logger.WriteLine("");
             logger.WriteLine("Running file transformer with the following settings: ");
-            logger.WriteLine($"MaximumParallelFileTransformations: {settings.MaxParallelFileTransformations}");
+            logger.WriteLine($"MaximumParallelFileTransformationsPerGroup: {settings.MaxParallelFileTransformationsPerGroup}");
             logger.WriteLine($"InputDirectoryPath: {settings.InputDirectoryPath}");
             logger.WriteLine($"OutputDirectoryPath: {settings.OutputDirectoryPath}");
             logger.WriteLine($"FileChunkSizeToReadInBytes: {settings.FileChunkSizeToReadInBytes}");
@@ -61,7 +61,7 @@ namespace Filestransformer.Actor
                 fileGroupManager));
 
             // initialize filegroupmanager machine
-            psharpRuntime.SendEvent(fileGroupManager, new eFileGroupManagerConfig(logger, settings.MaxParallelFileTransformations, 
+            psharpRuntime.SendEvent(fileGroupManager, new eFileGroupManagerConfig(logger, settings.MaxParallelFileTransformationsPerGroup, 
                 settings.InputDirectoryPath, settings.OutputDirectoryPath,
                 settings.FileChunkSizeToReadInBytes, settings.FileEncoding));
 
