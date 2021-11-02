@@ -9,21 +9,23 @@ namespace Filestransformer.Support.Logger
     {
         public void WriteLine(string message, LogLevelContext logLevelContext = LogLevelContext.Verbose)
         {
-            if (logLevelContext == LogLevelContext.Info)
+            switch (logLevelContext)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                case LogLevelContext.Verbose:
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+                case LogLevelContext.Info:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case LogLevelContext.Warning:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case LogLevelContext.Error:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
             }
-            else if (logLevelContext == LogLevelContext.Warning)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-            }
-            else if (logLevelContext == LogLevelContext.Error)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
-
+            
             Console.WriteLine($"{DateTime.UtcNow.ToString("HH:mm:ss.fff")} {message}");
-
             Console.ResetColor();
         }
     }

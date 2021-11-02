@@ -46,7 +46,7 @@ namespace Filestransformer.Actor
 
             logger.WriteLine("");
             logger.WriteLine("Running file transformer with the following settings: ");
-            logger.WriteLine($"MaximumParallelFileTransformationsPerGroup: {settings.MaxParallelFileTransformationsPerGroup}");
+            logger.WriteLine($"MaximumParallelFileTransformations: {settings.MaxParallelFileTransformationsPerGroup}");
             logger.WriteLine($"InputDirectoryPath: {settings.InputDirectoryPath}");
             logger.WriteLine($"OutputDirectoryPath: {settings.OutputDirectoryPath}");
             logger.WriteLine($"FileChunkSizeToReadInBytes: {settings.FileChunkSizeToReadInBytes}");

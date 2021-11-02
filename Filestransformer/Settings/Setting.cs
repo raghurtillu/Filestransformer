@@ -52,7 +52,6 @@ namespace Filestransformer.Settings
             {
                 this.MaxParallelFileTransformationsPerGroup = otherSettings.MaxParallelFileTransformationsPerGroup;
             }
-
             if (!string.IsNullOrWhiteSpace(otherSettings.InputDirectoryPath))
             {
                 this.InputDirectoryPath = otherSettings.InputDirectoryPath;
@@ -69,19 +68,49 @@ namespace Filestransformer.Settings
             {
                 this.FileChunkSizeToReadInBytes = otherSettings.FileChunkSizeToReadInBytes;
             }
-
             if (otherSettings.FileEncoding != FileEncoding.Unknown)
             {
                 this.FileEncoding = otherSettings.FileEncoding;
             }
-
-            if (this.MaxParallelFileTransformationsPerGroup <= 0) { throw new ArgumentException($"Invalid value '{this.MaxParallelFileTransformationsPerGroup}' specified."); }
-            if (string.IsNullOrWhiteSpace(this.InputDirectoryPath)) { throw new ArgumentException($"Invalid value '{this.InputDirectoryPath}' specified."); }
-            if (string.IsNullOrWhiteSpace(this.OutputDirectoryPath)) { throw new ArgumentException($"Invalid value '{this.OutputDirectoryPath}' specified."); }
-            if (this.FileChunkSizeToReadInBytes <= 0) { throw new ArgumentException($"Invalid value '{this.FileChunkSizeToReadInBytes}' specified."); }
-            if (this.FileEncoding == FileEncoding.Unknown) { throw new ArgumentException($"Invalid value '{this.FileEncoding}' specified."); }
-
             return this;
+        }
+    }
+
+    public static class SettingExtensions
+    {
+        public static Setting Validate(this Setting settings)
+        {
+            if (settings.MaxParallelFileTransformationsPerGroup <= 0)
+            { 
+                throw new ArgumentException($"Invalid value '{settings.MaxParallelFileTransformationsPerGroup}' for " +
+                    $"{nameof(settings.MaxParallelFileTransformationsPerGroup)} specified.");
+            }
+            if (string.IsNullOrWhiteSpace(settings.InputDirectoryPath))
+            { 
+                throw new ArgumentException($"Invalid value '{settings.InputDirectoryPath}' for " +
+                    $"{nameof(settings.InputDirectoryPath)} specified.");
+            }
+            if (string.IsNullOrWhiteSpace(settings.InputDirectoryPath))
+            { 
+                throw new ArgumentException($"Invalid value '{settings.InputDirectoryPath}' for " +
+                    $"{nameof(settings.InputDirectoryPath)} specified.");
+            }
+            if (string.IsNullOrWhiteSpace(settings.OutputDirectoryPath))
+            { 
+                throw new ArgumentException($"Invalid value '{settings.OutputDirectoryPath}' for " +
+                    $"{nameof(settings.OutputDirectoryPath)} specified.");
+            }
+            if (settings.FileChunkSizeToReadInBytes <= 0)
+            { 
+                throw new ArgumentException($"Invalid value '{settings.FileChunkSizeToReadInBytes}' for " +
+                    $"{nameof(settings.FileChunkSizeToReadInBytes)} specified.");
+            }
+            if (settings.FileEncoding == FileEncoding.Unknown)
+            { 
+                throw new ArgumentException($"Invalid value '{settings.FileEncoding}' for " +
+                    $"{nameof(settings.FileEncoding)} specified.");
+            }
+            return settings;
         }
     }
 

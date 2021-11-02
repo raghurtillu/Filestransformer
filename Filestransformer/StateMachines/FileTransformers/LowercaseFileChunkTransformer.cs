@@ -17,11 +17,12 @@ namespace Filestransformer.StateMachines.FileTransformers
 
             try
             {
-                string str = StreamUtils.GetFileChunkAsString(request.FileStream, request.FileChunkSizeToReadInBytes, request.FileEncoding);
-                if (!string.IsNullOrWhiteSpace(str))
+                string chunkedString = StreamUtils.GetFileChunkAsString(request.FileStream, request.FileChunkSizeToReadInBytes, request.FileEncoding);
+                if (!string.IsNullOrWhiteSpace(chunkedString))
                 {
-                    var transformedBytes = StreamUtils.GetBytesFromString(str.ToLower(), request.FileEncoding);
-                    this.Send(request.Sender, new eFileChunkTransformResponseEvent(FileTransformationStatus.Success, transformedBytes, failureReason));
+                    var transformedBytes = StreamUtils.GetBytesFromString(chunkedString.ToLower(), request.FileEncoding);
+                    this.Send(request.Sender, new eFileChunkTransformResponseEvent(FileTransformationStatus.Success, 
+                        transformedBytes, failureReason));
                 }
                 else
                 {

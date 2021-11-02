@@ -28,9 +28,7 @@ namespace Filestransformer.Settings
         /// <inheritdoc/>
         /// </summary>
         /// <returns></returns>
-        public Setting GetSettings()
-        {
-            return settings;
-        }
+        public Setting GetSettings() => settings;
+        
     }
 }

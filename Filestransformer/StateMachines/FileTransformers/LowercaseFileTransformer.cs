@@ -122,8 +122,8 @@ namespace Filestransformer.StateMachines.FileTransformers
 
         private void DisposeFileStreams()
         {
-            inputFileStream?.Close();
-            outputFileStream?.Close();
+            inputFileStream?.Dispose();
+            outputFileStream?.Dispose();
         }
 
         private void SendFileTranformationResponse(FileTransformationStatus status, string fileName, string failureReason = "")

@@ -12,9 +12,8 @@ namespace Filestransformer.Support.Logger
 
     internal static class LoggerFactory
     {
-        private static readonly Lazy<ILogger> _lazyLogger = new Lazy<ILogger>(() => CreateLogger(LoggerType.Console));
-
-        public static ILogger GetLogger() => _lazyLogger.Value;
+        private static readonly Lazy<ILogger> _lazyLogger = 
+            new Lazy<ILogger>(() => CreateLogger(LoggerType.Console));
 
         /// <summary>
         /// Creates logger (<seealso cref="ILogger"/> instance
@@ -32,5 +31,7 @@ namespace Filestransformer.Support.Logger
                 throw new NotImplementedException("Only supporting console logger currently.");
             }
         }
+
+        public static ILogger GetLogger() => _lazyLogger.Value;
     }
 }

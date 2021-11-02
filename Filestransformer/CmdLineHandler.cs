@@ -24,8 +24,9 @@ namespace Filestransformer
             // console settings can override default settings
             //
             var settings = new DefaultSettingsProvider().GetSettings()
-                .MergeFrom(new ConsoleSettingsProvider(op).GetSettings());
-
+                .MergeFrom(new ConsoleSettingsProvider(op).GetSettings())
+                    .Validate();
+           
             return new FiletransformerActor(settings);
         }
 

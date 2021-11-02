@@ -13,7 +13,6 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
     public class FileSystemWatcher : FileSystemWatcherBase
     {
         private ILogger logger;
-        private string inputDirectory;
         private string directoryToWatch;
         private System.IO.FileSystemWatcher watcher;
         private MachineId fileGroupManager;
@@ -25,7 +24,7 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
         {
             var config = ReceivedEvent as eFileSystemWatcherConfig;
             logger = config.Logger;
-            inputDirectory = directoryToWatch = config.DirectoryToWatch;
+            directoryToWatch = config.DirectoryToWatch;
             fileGroupManager = config.FileGroupManager;
 
             logger.WriteLine($"Initialized {nameof(FileSystemWatcher)} machine to watch directory \"{directoryToWatch}\" ");
@@ -37,10 +36,10 @@ namespace Filestransformer.StateMachines.FileSystemWatcher
         protected override void Run()
         {
             // get existing text files in the directory if any
-            var existingFiles = Directory.GetFiles(inputDirectory, "*.txt").ToList();
+            var existingFiles = Directory.GetFiles(directoryToWatch, "*.txt").ToList();
             if (existingFiles?.Count > 0)
             {
-                logger.WriteLine($"Found '{existingFiles.Count}' existing files in '{inputDirectory}' to transform");
+                logger.WriteLine($"Found '{existingFiles.Count}' existing files in '{directoryToWatch}' to transform");
 
                 // strip out path from the filenames
                 existingFiles = existingFiles.Select(x => Path.GetFileName(x)).ToList();
