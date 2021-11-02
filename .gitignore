@@ -9,10 +9,9 @@
 *.pdb
 *.obj
 *.cache
+*.config
 dummy*
 *.vs
 bin/
 obj/
-
-*.config
 packages/
