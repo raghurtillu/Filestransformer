@@ -46,16 +46,16 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
                 else
                 {
                     jump(Dispatching);
+                }
+             }
+            
+            on eFileTranformationResponseEvent do 
+            {
+                HandleFileTransformationResponse();
             }
-        }
             
-        on eFileTranformationResponseEvent do 
-        {
-            HandleFileTransformationResponse();
-        }
-            
-        defer *;
-    } // end of active state
+            defer *;
+        } // end of active state
 
         state Dispatching
         {

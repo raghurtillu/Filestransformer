@@ -31,7 +31,7 @@ namespace Filestransformer.StateMachines.TransformationDispatcher
         private int totalSuccessful = 0;
         private int totalFailed = 0;
 
-        private TimeSpan TIMER_RETRY_INTERVAL = TimeSpan.FromSeconds(10);
+        private readonly TimeSpan TIMER_RETRY_INTERVAL = TimeSpan.FromSeconds(10);
 
         /// <summary>
         /// <inheritdoc/>
