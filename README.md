@@ -37,8 +37,8 @@ CODE HYGIENE:
 ### Syntax
 FileTransformer.exe [-p <Int32>] [-i <String>] [-o <String>] [-f <Int32>] [-e <Int32>] <br>
 -p : maximum number of transformations allowed PER GROUP in an epoch, e.g., 3 <br>
--i : input directory where the file transformations will reside, e.g., c:\users\raghura\appdata\localtemp\inputs <br>
--o : output directory where the completed file transformations will reside e.g., c:\users\raghura\appdata\localtemp\outputs <br>
+-i : input directory where the file transformations will reside, e.g., c:\users\rags\appdata\local\temp\inputs <br>
+-o : output directory where the completed file transformations will reside e.g., c:\users\rags\appdata\local\temp\outputs <br>
 -f : number of bytes for file transformation to transform at a time e.g., 1024 <br>
 -e : file encoding type of transformed file e.g., utf8 <br>
  
