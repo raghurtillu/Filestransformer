@@ -8,9 +8,9 @@ using Filestransformer.Settings;
 using Filestransformer.Support.Utils;
 using Xunit;
 
-namespace FilestransformerUnitTests
+namespace Filestransformer.Tests
 {
-    public class StreamUtilsUnitTests
+    public class StreamUtilsTests
     {
         [Theory]
         [InlineData("blue", 0, FileEncoding.UTF8)]

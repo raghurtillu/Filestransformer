@@ -1,9 +1,9 @@
 ﻿using Filestransformer.Support.Utils;
 using Xunit;
 
-namespace FilestransformerUnitTests
+namespace Filestransformer.Tests
 {
-    public class FullyQualifiedNameClientUnitTests
+    public class FullyQualifiedNameClienTests
     {
         [Theory]
         [InlineData("", "", "")]
