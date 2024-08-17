@@ -1,4 +1,9 @@
 # Filestransformer
+![status](https://img.shields.io/badge/Development_Status-Completed-green)
+[![c#](https://img.shields.io/badge/C%23-blue)](https://learn.microsoft.com/en-us/dotnet/csharp/)
+[![p#](https://img.shields.io/badge/P%23-gray)](https://github.com/p-org/PSharp)
+[![vs](https://img.shields.io/badge/VisualStudio-purple)](https://visualstudio.microsoft.com/)
+
 PROBLEM OBJECTIVE:
 Please write a program to process text files. Each file can belong to one of three groups: {group1, group2, group3}. Each group can have an arbitrary number of files associated with it, represented as:
 
